@@ -1,0 +1,172 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Giphy from '~/components/Giphy.astro';
+import HeroSection from '~/components/ui/HeroSection.astro';
+import CTAButton from '~/components/ui/CTAButton.astro';
+import FeatureCard from '~/components/ui/FeatureCard.astro';
+import Card from '~/components/ui/Card.astro';
+
+const metadata = {
+  title: 'Chi Siamo - Victorian Monkey | La Storia del Ludopub di Roma',
+  description: 'Scopri la storia del Victorian Monkey, il ludopub di Roma dal 2015. La tana dei nerd dove giocare, bere e divertirsi in atmosfera vittoriana a San Lorenzo.',
+  keywords: 'Victorian Monkey storia, ludopub Roma storia, chi siamo, San Lorenzo Roma, giochi da tavolo Roma, community nerd Roma',
+  canonical: 'https://victorianmonkey.it/chi-siamo',
+  openGraph: {
+    title: 'Chi Siamo - Victorian Monkey | La Storia del Ludopub di Roma',
+    description: 'La storia del Victorian Monkey, il ludopub di Roma dal 2015. La tana dei nerd dove giocare e divertirsi.',
+    type: 'website',
+    locale: 'it_IT',
+    siteName: 'Victorian Monkey',
+    image: {
+      src: 'https://victorianmonkey.it/about-image.jpg',
+      alt: 'Victorian Monkey - Chi Siamo'
+    }
+  },
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Section -->
+  <HeroSection 
+    title="Chi Siamo"
+    logo={true}
+    subtitle="La Tana dei Nerd dal 2015"
+  />
+
+  <!-- Story Section -->
+  <div class="py-16 bg-white dark:bg-secondary">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="prose dark:prose-invert max-w-none">
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+          C'era una volta, nel quartiere di San Lorenzo, un gruppo di amici che passava più tempo a tirare dadi che a
+          dormire.
+        </p>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+          Tra una partita a D&D e una birra, nacque un'idea folle: creare un posto dove chiunque potesse sentirsi a
+          casa, ridere, giocare e condividere la propria passione per il mondo nerd.
+        </p>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-8">
+          Così, nel 2015, nasce il <strong>Victorian Monkey – La Tana dei Nerd di Roma</strong>.<br />
+          Un ludopub a tema nerd dove ogni sera è un'avventura diversa, fatta di giochi da tavolo, giochi di ruolo, buon
+          cibo e ottima compagnia.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- What You'll Find Section -->
+  <div class="py-16 bg-gray-50 dark:bg-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">🎲 Cosa troverai nella Tana</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300">Da noi puoi:</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <FeatureCard 
+          title="Centinaia di Giochi"
+          description="Scegliere tra centinaia di giochi da tavolo, dai classici intramontabili alle ultime novità."
+          icon="🎮"
+        />
+
+        <FeatureCard 
+          title="Sessioni di GdR"
+          description="Partecipare a sessioni di GdR con master esperti (e qualche dado maledetto)."
+          icon="🧙"
+        />
+
+        <FeatureCard 
+          title="Cibo e Bevande"
+          description="Gustare panini epici, birre artigianali e cocktail unici, pensati per ogni tipo di eroe."
+          icon="🍔"
+        />
+
+        <FeatureCard 
+          title="Eventi e Serate"
+          description="Vivere eventi e serate a tema che trasformano ogni visita in una nuova missione."
+          icon="🌟"
+        />
+      </div>
+
+      <div class="mt-12 text-center">
+        <Card variant="gradient">
+          <p class="text-lg text-gray-700 dark:text-gray-300">
+            E tutto questo con l'atmosfera che ci contraddistingue: un tocco vittoriano, un po' di follia da laboratorio
+            steampunk e tanta voglia di divertirsi insieme.
+          </p>
+        </Card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Community Section -->
+  <div class="py-16 bg-white dark:bg-secondary">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">🧙 La nostra community</h2>
+      </div>
+
+      <div class="prose dark:prose-invert max-w-none text-center">
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+          Il Victorian Monkey è molto più di un locale: è una <strong>community</strong>.
+        </p>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+          Un rifugio per chi ama condividere risate, storie, partite e momenti di pura spensieratezza.
+        </p>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-8">
+          Da anni accogliamo giocatori esperti, curiosi, nuovi arrivati e amici che magari entrano solo per un drink… e
+          poi restano per una campagna intera.
+        </p>
+        <Card variant="gradient">
+          <p class="text-xl font-semibold text-gray-800 dark:text-white">
+            Se ti senti un po' nerd, un po' giocatore, o semplicemente cerchi un posto dove essere te stesso: <strong
+              >benvenuto a casa</strong
+            >.
+          </p>
+        </Card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Philosophy Section -->
+  <div class="py-16 bg-gradient-to-r from-purple-600 to-blue-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-white mb-8">🍻 La filosofia del Monkey</h2>
+
+      <div class="bg-white/10 backdrop-blur-sm rounded-lg p-8 mb-8">
+        <p class="text-xl text-white mb-6">Gioca con rispetto, bevi con gusto, vivi con leggerezza.</p>
+        <p class="text-lg text-purple-100 mb-6">Dietro ogni birra e ogni partita, c'è una regola non scritta:</p>
+        <div class="bg-white/20 rounded-lg p-6">
+          <p class="text-2xl font-bold text-white italic">"Qui non si vince. Si gioca."</p>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <CTAButton
+          href="/contatti"
+          text="📞 Vieni a trovarci"
+          variant="outline"
+        />
+        <CTAButton
+          href="/menu"
+          text="🍔 Scopri il nostro menù"
+          variant="outline"
+        />
+        <CTAButton
+          href="/comunicazioni"
+          text="📜 Leggi gli annunci"
+          variant="outline"
+        />
+      </div>
+
+      <!-- Custom Content Placeholder -->
+      <div class="mt-16 text-center">
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-8 border-2 border-dashed border-white/30">
+          <Giphy id="2ZYIL3Oa5OXaD0QlNx" />
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

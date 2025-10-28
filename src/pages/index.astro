@@ -1,19 +1,46 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-
 import Hero from '~/components/widgets/Hero.astro';
-import Note from '~/components/widgets/Note.astro';
 import Features from '~/components/widgets/Features.astro';
-import Features2 from '~/components/widgets/Features2.astro';
-import Steps from '~/components/widgets/Steps.astro';
 import Content from '~/components/widgets/Content.astro';
-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
+import CTAButton from '~/components/ui/CTAButton.astro';
+import Card from '~/components/ui/Card.astro';
+import CategoryBadge from '~/components/ui/CategoryBadge.astro';
+import FormattedDate from '~/components/ui/FormattedDate.astro';
+import StructuredData from '~/components/common/StructuredData.astro';
+import { getApiUrl, API_ENDPOINTS } from '~/config/api';
+import { formatPhoneNumber } from '~/utils/ui-utils';
+
+// Fetch annunci data from API
+const annunciResponse = await fetch(getApiUrl(API_ENDPOINTS.ANNUNCI));
+const annunciData = await annunciResponse.json();
+
+// Fetch contatti data from API
+const contattiResponse = await fetch(getApiUrl(API_ENDPOINTS.CONTATTI));
+const contattiData = await contattiResponse.json();
+
+// Filter active announcements (dateEnd > today)
+const today = new Date().toISOString().split('T')[0];
+const activeAnnouncements = annunciData.announcements.filter(annuncio => 
+  annuncio.dateEnd && annuncio.dateEnd >= today
+);
 
 const metadata = {
-  title: 'AstroWind — Free template for creating websites with Astro + Tailwind CSS',
+  title: 'Victorian Monkey - La Tana dei Nerd di Roma | Ludopub San Lorenzo',
+  description: 'Il Victorian Monkey è il ludopub di Roma dove giocare, bere e divertirsi dal 2015. 300+ giochi da tavolo, GdR, birre artigianali e atmosfera unica a San Lorenzo.',
+  keywords: 'ludopub Roma, giochi da tavolo Roma, GdR Roma, Victorian Monkey, San Lorenzo, birre artigianali Roma, giochi di ruolo Roma',
+  canonical: 'https://victorianmonkey.it',
+  openGraph: {
+    title: 'Victorian Monkey - La Tana dei Nerd di Roma',
+    description: 'Il ludopub di Roma dove giocare, bere e divertirsi dal 2015. 300+ giochi da tavolo, GdR e birre artigianali.',
+    type: 'website',
+    locale: 'it_IT',
+    siteName: 'Victorian Monkey',
+    image: {
+      src: 'https://victorianmonkey.it/hero-image.png',
+      alt: 'Victorian Monkey - La Tana dei Nerd di Roma'
+    }
+  },
   ignoreTitleTemplate: true,
 };
 ---
@@ -25,375 +52,351 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Get template',
-        href: 'https://github.com/arthelokyo/astrowind',
-        target: '_blank',
-        icon: 'tabler:download',
+        text: '👉 Prenota un tavolo',
+        href: '/contatti',
+        icon: 'tabler:calendar-plus',
       },
-      { text: 'Learn more', href: '#features' },
+      { 
+        text: '🪙 Diventa Socio', 
+        href: '/contatti',
+        icon: 'tabler:credit-card',
+      },
     ]}
-    image={{ src: '~/assets/images/hero-image.png', alt: 'AstroWind Hero Image' }}
+    image={{ src: '~/assets/images/monkey-logo.svg', alt: 'Victorian Monkey - La Tana dei Nerd', class: 'mx-auto hero-logo' }}
   >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/20 dark:from-primary/20 dark:to-secondary/40"></div>
+    </Fragment>
     <Fragment slot="title">
-      Free template for <span class="hidden xl:inline">creating websites with</span>
-      <span class="text-accent dark:text-white"> Astro 5.0</span> + Tailwind CSS
+      <div class="flex flex-col items-center justify-center mb-4">
+        <img src="/src/assets/images/monkey-logo.svg" alt="Victorian Monkey Logo" class="w-16 h-16 mb-4" />
+        <div class="text-center">
+          <span class="text-4xl md:text-5xl font-bold text-white mb-2">Benvenuti al</span>
+          <div class="flex justify-center">
+            <img src="/src/assets/images/logo-text.svg" alt="Victorian Monkey - La Tana dei Nerd di Roma" class="h-12 md:h-16 logo-text" style="object-fit: contain;" />
+          </div>
+        </div>
+      </div>
     </Fragment>
 
     <Fragment slot="subtitle">
-      <span class="hidden sm:inline">
-        <span class="font-semibold">AstroWind</span> is a free, customizable and production-ready template for Astro 5.0
-        + Tailwind CSS.</span
-      >
-      <span class="block mb-1 sm:hidden font-bold text-blue-600">AstroWind: Production-ready.</span>
-      Suitable for Startups, Small Business, SaaS websites, Professional Portfolios, Marketing websites, Landing Pages &
-      Blogs.
+      <span class="font-semibold">La tana dei nerd di Roma</span> – giochi, drink e risate dal 2015
+      <br><br>
+      Dal 2015 siamo il punto di ritrovo per chi ama i giochi da tavolo, i GdR, le birre artigianali e le serate in buona compagnia.
+      <br><br>
+      Che tu venga per lanciare i dadi, per una partita a Risiko o solo per una pinta in pace… qui sei nel posto giusto.
+      <br><br>
+      <a href="/regolamento" class="text-sm text-primary hover:underline">
+        ⚖️ Leggi il nostro regolamento
+      </a>
     </Fragment>
   </Hero>
 
-  <!-- Note Widget ******************* -->
+  <!-- Announcements Section ******************* -->
 
-  <Note title="Philosophy:" description="Simplicity, Best Practices and High Performance" />
+  <div class="bg-gray-50 dark:bg-secondary py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          📜 Annunci dalla Tana
+        </h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+          Resta aggiornato su eventi, tornei, serate speciali e comunicazioni per i soci del Victorian Monkey.
+          <br>
+          La community cresce… e tu puoi farne parte!
+        </p>
+        
+        {activeAnnouncements.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {activeAnnouncements.slice(0, 3).map((annuncio) => (
+              <Card className="mb-4 bg-white dark:bg-secondary">
+                <div class="flex items-center justify-between mb-3">
+                  <CategoryBadge color={annunciData.categories.find(c => c.id === annuncio.category)?.color || 'gray'}>
+                    {annunciData.categories.find(c => c.id === annuncio.category)?.name}
+                  </CategoryBadge>
+                  <FormattedDate dateString={annuncio.date} />
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                  {annuncio.title}
+                </h3>
+                <p class="text-gray-600 dark:text-white/80 mb-4">
+                  {annuncio.excerpt}
+                </p>
+                {annuncio.priority === 'high' && (
+                  <div class="mb-3">
+                    <span class="px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-full text-xs font-medium">
+                      IMPORTANTE
+                    </span>
+                  </div>
+                )}
+                <div class="text-sm text-gray-500 dark:text-white/70">
+                  Scade: <FormattedDate dateString={annuncio.dateEnd} />
+                </div>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Card className="mb-8">
+            <p class="text-gray-600 dark:text-gray-300">
+              Al momento non ci sono annunci attivi. Torna presto per le ultime novità!
+            </p>
+          </Card>
+        )}
+        
+        <CTAButton 
+          href="/comunicazioni" 
+          text="➡️ Leggi tutti gli annunci"
+          variant="secondary"
+        />
+      </div>
+    </div>
+  </div>
 
   <!-- Features Widget *************** -->
 
   <Features
-    id="features"
-    tagline="Features"
-    title="What you get with AstroWind"
-    subtitle="One of the most professional and comprehensive templates currently on the market. Most starred & forked Astro theme in 2022, 2023 and 2024."
+    id="gaming"
+    tagline="Il nostro locale"
+    title="🎲 Gioca. Bevi. Ridi. Ripeti."
+    subtitle="Più di 300 giochi da tavolo, una collezione in continua espansione, master di ruolo pronti a farti vivere avventure epiche e un menù pensato per i veri avventurieri del gusto. Che tu sia un elfo ladro o un umano stanco del traffico romano, qui troverai rifugio, birra fresca e buona compagnia."
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-white dark:bg-secondary"></div>
+    </Fragment>
     items={[
       {
-        title: 'Astro + Tailwind CSS Integration',
+        title: '300+ Giochi da Tavolo',
         description:
-          'A seamless integration between two great frameworks that offer high productivity, performance and versatility.',
-        icon: 'tabler:brand-tailwind',
+          'Una collezione in continua espansione: dai classici intramontabili alle ultime novità del mercato. C\'è sempre qualcosa di nuovo da scoprire.',
+        icon: 'tabler:device-gamepad-2',
       },
       {
-        title: 'Ready-to-use Components',
+        title: 'Master di Ruolo Esperti',
         description:
-          'Widgets made with Tailwind CSS ready to be used in Marketing Websites, SaaS, Blogs, Personal Profiles, Small Business...',
-        icon: 'tabler:components',
+          'I nostri master sono pronti a farti vivere avventure epiche in mondi fantastici. D&D, Pathfinder, Call of Cthulhu e molto altro.',
+        icon: 'tabler:sword',
       },
       {
-        title: 'Best Practices',
+        title: 'Menù per Avventurieri',
         description:
-          'Creating secure, efficient, and user-friendly websites that deliver exceptional experiences and lasting value.',
-        icon: 'tabler:list-check',
+          'Un menù pensato per i veri avventurieri del gusto: birre artigianali, panini gourmet e snack per non perdere mai la concentrazione.',
+        icon: 'tabler:beer',
       },
       {
-        title: 'Excellent Page Speed',
+        title: 'Atmosfera Unica',
         description:
-          'Having a good page speed impacts organic search ranking, improves user experience (UI/UX) and increase conversion rates.',
-        icon: 'tabler:rocket',
+          'Un ambiente che profuma di avventure, risate e buona compagnia. Il posto perfetto per dimenticare lo stress quotidiano.',
+        icon: 'tabler:home-heart',
       },
       {
-        title: 'Search Engine Optimization (SEO)',
+        title: 'Eventi e Tornei',
         description:
-          "SEO lies in its ability to enhance a website's visibility, driving organic traffic and enabling it to reach a wider audience.",
-        icon: 'tabler:arrows-right-left',
+          'Serate speciali, tornei, presentazioni di nuovi giochi e molto altro. C\'è sempre qualcosa di interessante in programma.',
+        icon: 'tabler:calendar-event',
       },
       {
-        title: 'Open to new ideas and contributions',
+        title: 'Community Accogliente',
         description:
-          'Embracing a culture that is open to new ideas and contributions is integral fostering innovation, collaboration, and a dynamic user experience.',
-        icon: 'tabler:bulb',
+          'Un posto dove tutti sono benvenuti, dai principianti ai veterani. La passione per i giochi ci unisce tutti.',
+        icon: 'tabler:users',
       },
     ]}
-  />
+  </Features>
+
+  <!-- Menu CTA Section **************** -->
+
+  <div class="bg-gray-50 dark:bg-secondary py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <CTAButton 
+        href="/menu" 
+        text="🍔 Scopri il nostro menù"
+        variant="secondary"
+        size="lg"
+      />
+    </div>
+  </div>
 
   <!-- Content Widget **************** -->
 
   <Content
     isReversed
-    tagline="Inside template"
-    title="AstroWind's Blueprint: Fun Meets Functionality!"
+    tagline="La nostra storia"
+    title="🧭 Dal 2015, nerd con stile."
     items={[
       {
-        title: 'Built on top of Astro 5.0',
+        title: 'Un sogno tra amici',
         description:
-          'Benefiting from the performance and developer-friendly features of this modern static site generator.',
+          'Il Victorian Monkey nasce a San Lorenzo come un piccolo sogno tra amici: creare una tana dove divertirsi senza pensare a nulla.',
       },
       {
-        title: 'Styled using Tailwind CSS',
+        title: 'Una casa per giocatori',
         description:
-          'Facilitating rapid design and consistent styling with this highly popular utility-first CSS framework.',
+          'Oggi è una casa per giocatori, sognatori e curiosi. Un posto dove la passione per i giochi si incontra con la buona compagnia.',
       },
       {
-        title: 'Cross-browser compatibility',
+        title: 'Stile vittoriano',
         description:
-          'Ensure your website looks and functions consistently across various web browsers, delivering a seamless experience to all users.',
+          'E sì, ci piace un tocco di stile vittoriano. Perché anche i nerd hanno diritto alla classe e all\'eleganza.',
       },
     ]}
     image={{
       src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Colorful Image',
+      alt: 'Victorian Monkey - La Tana dei Nerd',
     }}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Building on modern foundations</h3>
-      Gain a competitive advantage by incorporating industry leading practices
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Una storia di passione e amicizia</h3>
+      Dal 2015, il Victorian Monkey è cresciuto insieme alla community romana dei giocatori, diventando un punto di riferimento per chi ama i giochi da tavolo e i GdR.
     </Fragment>
 
     <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+      <div class="absolute inset-0 bg-gray-50 dark:bg-secondary"></div>
     </Fragment>
   </Content>
+
+  <!-- Story CTA Section **************** -->
+
+  <div class="bg-gray-50 dark:bg-secondary py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <CTAButton 
+        href="#chi-siamo" 
+        text="📖 Scopri la nostra storia"
+        variant="primary"
+        size="lg"
+      />
+    </div>
+  </div>
 
   <!-- Content Widget **************** -->
 
   <Content
     isAfterContent
+    id="contatti"
     items={[
       {
-        title: 'High level of customization',
-        description: `Tailor the template effortlessly to match your brand's identity and requirements, making your website distinct and saving you time.`,
+        title: '📍 Via dei Piceni 29, San Lorenzo – Roma',
+        description: 'Ci trovi nel cuore di San Lorenzo, facilmente raggiungibile con i mezzi pubblici e a piedi dal centro storico.',
       },
       {
-        title: 'Multiple layout possibilities',
+        title: '🕐 Aperti ogni sera',
         description:
-          'Explore various layout options to find the structure that best presents your content, enhancing user engagement and navigation.',
+          'Siamo aperti ogni sera con giochi, buon cibo e un\'atmosfera che profuma di avventure (e patatine fritte).',
       },
       {
-        title: 'Fully responsive design',
+        title: '🎲 Prenota il tuo tavolo',
         description:
-          "Ensure your website's optimal performance on various devices and screen sizes, providing a consistent and enjoyable user experience.",
+          'Prenota il tuo tavolo per assicurarti un posto nella nostra tana. Gruppi grandi o piccoli, tutti sono benvenuti.',
       },
       {
-        title: 'Integration of media',
+        title: '🍺 Birre artigianali e buon cibo',
         description:
-          'Seamlessly incorporate images, videos, and multimedia elements that enhance your content and engage visitors effectively.',
+          'Un menù pensato per i veri avventurieri: birre artigianali, panini gourmet e snack per non perdere mai la concentrazione.',
       },
     ]}
     image={{
       src: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2194&q=80',
-      alt: 'Blueprint Image',
+      alt: 'Victorian Monkey - Via dei Piceni 29',
     }}
   >
-    <Fragment slot="content">Ensure your online presence truly represents you.</Fragment>
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">📍 Vieni a lanciare i dadi con noi</h3>
+      Ci trovi in Via dei Piceni 29, San Lorenzo – Roma.
+      <br>
+      Aperti ogni sera con giochi, buon cibo e un'atmosfera che profuma di avventure (e patatine fritte).
+    </Fragment>
 
     <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+      <div class="absolute inset-0 bg-gray-50 dark:bg-secondary"></div>
     </Fragment>
   </Content>
 
-  <!-- Content Widget **************** -->
+  <!-- Directions CTA Section **************** -->
 
-  <Content
-    isReversed
-    isAfterContent
-    items={[
-      {
-        title: 'Enhanced user engagement',
-        description:
-          'Captivate your audience with interactive elements, intuitive navigation, and visually appealing layouts, encouraging longer visits.',
-      },
-      {
-        title: 'Continuous improvement',
-        description:
-          'Ensure your website stays aligned with the latest trends and technologies through regular updates and enhancements.',
-      },
-      {
-        title: 'Time and resource efficiency',
-        description:
-          'Skip the time-consuming process of building a website from scratch and launch your online presence sooner with AstroWind.',
-      },
-      {
-        title: 'Community support',
-        description: `Join the growing AstroWind community for insights, resources, and assistance, ensuring you're never alone on your web development journey.`,
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1611462985358-60d3498e0364?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Astronauts Image',
-    }}
-  >
-    <Fragment slot="content">Designed to foster growth and success.</Fragment>
+  <div class="bg-orange-50 dark:bg-orange-900/20 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <CTAButton 
+        href="https://maps.google.com/?q=Via+dei+Piceni+29,+Roma" 
+        text="🗺️ Come raggiungerci"
+        variant="secondary"
+        size="lg"
+        target="_blank"
+      />
+    </div>
+  </div>
 
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
+  <!-- Final CTA Section **************** -->
 
-  <!-- Steps Widget ****************** -->
-
-  <Steps
-    title="Get your dream website up and running in no time with AstroWind."
-    items={[
-      {
-        title: 'Step 1: <span class="font-medium">Download</span>',
-        description:
-          "Kickstart with GitHub! Either fork the AstroWind template or simply click 'Use this template'. Your canvas awaits, ready for your digital masterpiece. In just a few clicks, you've already set the foundation.",
-        icon: 'tabler:package',
-      },
-      {
-        title: 'Step 2: <span class="font-medium">Add content</span>',
-        description:
-          "Pour your vision into it. Add images, text, and all that jazz to breathe life into your digital space. Remember, it's the content that tells your story, so make it captivating.",
-        icon: 'tabler:letter-case',
-      },
-      {
-        title: 'Step 3: <span class="font-medium">Customize styles</span>',
-        description:
-          'Give it your personal touch. Tailor colors, fonts, and layouts until it feels just right. Your unique flair, amplified by AstroWind! Precision in design ensures a seamless user experience.',
-        icon: 'tabler:paint',
-      },
-      {
-        title: 'Ready!',
-        icon: 'tabler:check',
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1616198814651-e71f960c3180?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
-      alt: 'Steps image',
-    }}
-  />
-
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    title="Most used widgets"
-    subtitle="Provides frequently used components for building websites using Tailwind CSS"
-    tagline="Components"
-    items={[
-      {
-        title: 'Headers',
-        description: "Ever tried driving without GPS? Boom! That's why websites need headers for direction.",
-        icon: 'flat-color-icons:template',
-      },
-      {
-        title: 'Heros',
-        description:
-          "Picture a superhero landing – epic, right? That's the job of a Hero section, making grand entrances!",
-        icon: 'flat-color-icons:gallery',
-      },
-      {
-        title: 'Features',
-        description:
-          'Where websites strut their stuff and show off superpowers. No holding back on the bragging rights here!',
-        icon: 'flat-color-icons:approval',
-      },
-      {
-        title: 'Content',
-        description:
-          "Dive into the meat and potatoes of a site; without it, you'd just be window shopping. Content is king.",
-        icon: 'flat-color-icons:document',
-      },
-      {
-        title: 'Call-to-Action',
-        description:
-          'That enthusiastic friend who\'s always urging, "Do it! Do it!"? Yeah, that\'s this button nudging you towards adventure.',
-        icon: 'flat-color-icons:advertising',
-      },
-      {
-        title: 'Pricing',
-        description: 'Behold the dessert menu of the website world. Tempting choices await, can you resist?',
-        icon: 'flat-color-icons:currency-exchange',
-      },
-      {
-        title: 'Testimonial',
-        description: 'Step into the gossip corner! Here, other visitors spill the beans and share the juicy details.',
-        icon: 'flat-color-icons:voice-presentation',
-      },
-      {
-        title: 'Contact',
-        description:
-          'Like a digital mailbox, but faster! Drop a line, ask a question, or send a virtual high-five. Ding! Message in.',
-        icon: 'flat-color-icons:business-contact',
-      },
-      {
-        title: 'Footers',
-        description: "The footer's like the credits of a movie but sprinkled with easter eggs. Time to hunt!",
-        icon: 'flat-color-icons:database',
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Features2>
-
-  <!-- HighlightedPosts Widget ******* -->
-
-  <BlogLatestPosts
-    title="Find out more content in our Blog"
-    information={`The blog is used to display AstroWind documentation.
-                        Each new article will be an important step that you will need to know to be an expert in creating a website using Astro + Tailwind CSS.
-                        Astro is a very interesting technology. Thanks.
-                `}
-  />
-
-  <!-- FAQs Widget ******************* -->
-
-  <FAQs
-    title="Frequently Asked Questions"
-    subtitle="Dive into the following questions to gain insights into the powerful features that AstroWind offers and how it can elevate your web development journey."
-    tagline="FAQs"
-    classes={{ container: 'max-w-6xl' }}
-    items={[
-      {
-        title: 'Why AstroWind?',
-        description:
-          "Michael Knight a young loner on a crusade to champion the cause of the innocent. The helpless. The powerless in a world of criminals who operate above the law. Here he comes Here comes Speed Racer. He's a demon on wheels.",
-      },
-      {
-        title: 'What do I need to start?',
-        description:
-          'Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds. Many say exploration is part of our destiny, but it’s actually our duty to future generations.',
-      },
-      {
-        title: 'How to install the Astro + Tailwind CSS template?',
-        description:
-          "Well, the way they make shows is, they make one show. That show's called a pilot. Then they show that show to the people who make shows, and on the strength of that one show they decide if they're going to make more shows.",
-      },
-      {
-        title: "What's something that you don't understand?",
-        description:
-          "A flower in my garden, a mystery in my panties. Heart attack never stopped old Big Bear. I didn't even know we were calling him Big Bear.",
-      },
-      {
-        title: 'What is something that you would like to try again?',
-        description:
-          "A business big enough that it could be listed on the NASDAQ goes belly up. Disappears! It ceases to exist without me. No, you clearly don't know who you're talking to, so let me clue you in.",
-      },
-      {
-        title: 'If you could only ask one question to each person you meet, what would that question be?',
-        description:
-          "This is not about revenge. This is about justice. A lot of things can change in twelve years, Admiral. Well, that's certainly good to know. About four years. I got tired of hearing how young I looked.",
-      },
-    ]}
-  />
-
-  <!-- Stats Widget ****************** -->
-
-  <Stats
-    stats={[
-      { title: 'Downloads', amount: '132K' },
-      { title: 'Stars', amount: '24.8K' },
-      { title: 'Forks', amount: '10.3K' },
-      { title: 'Users', amount: '48.4K' },
-    ]}
-  />
-
-  <!-- CallToAction Widget *********** -->
-
-  <CallToAction
-    actions={[
-      {
-        variant: 'primary',
-        text: 'Get template',
-        href: 'https://github.com/arthelokyo/astrowind',
-        target: '_blank',
-        icon: 'tabler:download',
-      },
-    ]}
-  >
-    <Fragment slot="title">
-      Astro&nbsp;+&nbsp;<br class="block sm:hidden" /><span class="sm:whitespace-nowrap">Tailwind CSS</span>
-    </Fragment>
-
-    <Fragment slot="subtitle">
-      Be very surprised by these huge fake numbers you are seeing on this page. <br class="hidden md:inline" />Don't
-      waste more time! :P
-    </Fragment>
-  </CallToAction>
+  <div class="bg-gradient-to-r from-primary to-secondary py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-4xl font-bold text-white mb-6">
+        🎲 Pronto per la tua prossima avventura?
+      </h2>
+      <p class="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
+        Vieni a trovarci al Victorian Monkey e scopri perché dal 2015 siamo la tana preferita dei nerd di Roma.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <CTAButton 
+          href="/contatti" 
+          text="🎯 Prenota un tavolo"
+          variant="outline"
+          size="lg"
+        />
+        <CTAButton 
+          href="https://maps.google.com/?q=Via+dei+Piceni+29,+Roma" 
+          text="🗺️ Come raggiungerci"
+          variant="outline"
+          size="lg"
+          target="_blank"
+        />
+        <CTAButton 
+          href="/regolamento" 
+          text="⚖️ Regolamento"
+          variant="outline"
+          size="lg"
+        />
+      </div>
+    </div>
+  </div>
 </Layout>
+
+<!-- Structured Data -->
+<StructuredData 
+  type="LocalBusiness"
+  data={{
+    name: "Victorian Monkey",
+    description: "Ludopub di Roma specializzato in giochi da tavolo, GdR e birre artigianali",
+    url: "https://victorianmonkey.it",
+    telephone: formatPhoneNumber(contattiData.contact.phone),
+    email: contattiData.contact.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: contattiData.address.street,
+      addressLocality: contattiData.address.city,
+      addressRegion: "Lazio",
+      postalCode: "00185",
+      addressCountry: "IT"
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: "41.9028",
+      longitude: "12.4964"
+    },
+    openingHours: [
+      "Mo-Th 19:00-02:00",
+      "Fr-Su 19:00-03:00"
+    ],
+    priceRange: "€€",
+    servesCuisine: "Italiana",
+    amenityFeature: [
+      "Giochi da tavolo",
+      "Giochi di ruolo",
+      "Birre artigianali",
+      "Cocktail",
+      "WiFi gratuito"
+    ],
+    sameAs: [
+      "https://www.facebook.com/victorianmonkey",
+      "https://www.instagram.com/victorianmonkey"
+    ]
+  }}
+/>

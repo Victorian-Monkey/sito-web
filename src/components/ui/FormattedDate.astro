@@ -1,0 +1,38 @@
+---
+export interface Props {
+  dateString: string;
+  format?: 'short' | 'long' | 'time';
+  className?: string;
+}
+
+const { dateString, format = 'short', className = '' } = Astro.props;
+
+const formatDate = (dateString: string, format: string) => {
+  const date = new Date(dateString);
+  
+  switch (format) {
+    case 'long':
+      return date.toLocaleDateString('it-IT', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    case 'time':
+      return date.toLocaleTimeString('it-IT', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    case 'short':
+    default:
+      return date.toLocaleDateString('it-IT', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+  }
+};
+---
+
+<span class={`text-sm text-gray-500 dark:text-gray-400 ${className}`}>
+  {formatDate(dateString, format)}
+</span>

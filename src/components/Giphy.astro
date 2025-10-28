@@ -1,0 +1,49 @@
+---
+export interface Props {
+  id: string;
+  width?: string;
+  height?: string;
+  className?: string;
+}
+
+const { id, width = "100%", height = "100%", className = "" } = Astro.props;
+---
+
+<div class={`giphy-container ${className}`} style={`width:${width};height:0;padding-bottom:49%;position:relative;`}>
+  <iframe
+    src={`https://giphy.com/embed/${id}`}
+    width={width}
+    height={height}
+    style="position:absolute"
+    frameborder="0"
+    class="giphy-embed"
+    allowfullscreen
+    loading="lazy"
+  ></iframe>
+  <!-- Overlay trasparente per bloccare eventi -->
+  <div class="giphy-overlay"></div>
+</div>
+
+<style>
+  .giphy-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .giphy-container iframe {
+    border: none !important;
+    outline: none !important;
+  }
+  
+  /* Overlay trasparente per bloccare eventi */
+  .giphy-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 10;
+    pointer-events: auto;
+  }
+</style>

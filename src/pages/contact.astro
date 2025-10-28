@@ -3,75 +3,181 @@ import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import ContactUs from '~/components/widgets/Contact.astro';
 import Features2 from '~/components/widgets/Features2.astro';
+import CTAButton from '~/components/ui/CTAButton.astro';
+import Card from '~/components/ui/Card.astro';
+import { getApiUrl, API_ENDPOINTS } from '~/config/api';
+import { formatPhoneNumber } from '~/utils/ui-utils';
+
+// Fetch contatti data from API
+const response = await fetch(getApiUrl(API_ENDPOINTS.CONTATTI));
+const contattiData = await response.json();
 
 const metadata = {
-  title: 'Contact',
+  title: 'Contatti - Victorian Monkey | Prenota Tavolo San Lorenzo Roma',
+  description: 'Contatta il Victorian Monkey per prenotare un tavolo, informazioni su eventi e giochi. Ludopub a San Lorenzo, Roma.',
 };
 ---
 
 <Layout metadata={metadata}>
   <!-- HeroText Widget ******************* -->
 
-  <HeroText tagline="Contact" title="Let's Connect!" />
+  <HeroText tagline="Contatti" title="Vieni a trovarci!" />
 
   <ContactUs
     id="form"
-    title="Drop us a message today!"
-    subtitle="For quicker answers, explore our FAQs section. You may find the solution you're looking  for right there! If not, our support team is delighted to help you."
+    title="Scrivici pure!"
+    subtitle="Hai domande sui nostri giochi, vuoi prenotare un tavolo o hai bisogno di informazioni? Siamo qui per te!"
     inputs={[
       {
         type: 'text',
         name: 'name',
-        label: 'Name',
+        label: 'Nome *',
+        placeholder: 'Il tuo nome',
       },
       {
         type: 'email',
         name: 'email',
-        label: 'Email',
+        label: 'Email *',
+        placeholder: 'tua.email@esempio.com',
+      },
+      {
+        type: 'tel',
+        name: 'phone',
+        label: 'Telefono *',
+        placeholder: '351 309 3686',
       },
     ]}
     textarea={{
-      label: 'Message',
+      label: 'Messaggio',
+      placeholder: 'Scrivi qui il tuo messaggio...',
     }}
     disclaimer={{
       label:
-        'By submitting this contact form, you acknowledge and agree to the collection of your personal information.',
+        'Inviando questo modulo di contatto, accetti e acconsenti alla raccolta delle tue informazioni personali. Il numero di telefono è obbligatorio per permetterci di ricontattarti.',
     }}
-    description="Our support team typically responds within 24 business hours."
+    description="Il nostro team risponde solitamente entro 24 ore lavorative."
   />
+
+  <!-- Orari e Trasporti Section **************** -->
+
+  <div class="py-16 bg-gray-50 dark:bg-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Orari di Apertura -->
+        <Card>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            🕐 Orari di Apertura
+          </h3>
+          <div class="space-y-4">
+            {contattiData.openingHours.map((schedule) => (
+              <div class="border-l-4 border-purple-500 pl-4">
+                <h4 class="font-semibold text-gray-800 dark:text-white mb-2">
+                  {schedule.days.join(', ')}
+                </h4>
+                <p class="text-gray-600 dark:text-gray-300">
+                  {schedule.hours.open} - {schedule.hours.close}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <!-- Come Raggiungerci -->
+        <Card>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            🚇 Come Raggiungerci
+          </h3>
+          <div class="space-y-4">
+            <div>
+              <h4 class="font-semibold text-gray-800 dark:text-white mb-2">
+                🚇 Metro
+              </h4>
+              <p class="text-gray-600 dark:text-gray-300">
+                {contattiData.transport.metro.line} - Stazione {contattiData.transport.metro.station}
+                <br>
+                <span class="text-sm text-gray-500">({contattiData.transport.metro.walkingTime} a piedi)</span>
+              </p>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 dark:text-white mb-2">
+                🚌 Autobus
+              </h4>
+              <p class="text-gray-600 dark:text-gray-300">
+                Linee {contattiData.transport.bus[0].lines.join(', ')} - Fermata {contattiData.transport.bus[0].stop}
+              </p>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 dark:text-white mb-2">
+                🅿️ Parcheggio
+              </h4>
+              <p class="text-gray-600 dark:text-gray-300">
+                {contattiData.transport.parking[0].description}
+              </p>
+            </div>
+          </div>
+        </Card>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Social Media Section **************** -->
+
+  <div class="py-16 bg-white dark:bg-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">
+        📱 Seguici sui Social
+      </h3>
+      <div class="flex flex-wrap justify-center gap-6">
+        {contattiData.socialMedia.map((social) => (
+          social.url && (
+            <CTAButton 
+              href={social.url} 
+              text={social.platform === 'facebook' ? '📘 Facebook' : 
+                    social.platform === 'instagram' ? '📷 Instagram' :
+                    social.platform === 'discord' ? '🎮 Discord' :
+                    social.platform === 'youtube' ? '📺 YouTube' : social.platform}
+              target="_blank"
+            />
+          )
+        ))}
+      </div>
+    </div>
+  </div>
 
   <!-- Features2 Widget ************** -->
 
   <Features2
-    title="We are here to help!"
+    title="Come contattarci"
     items={[
       {
-        title: 'General support',
-        description: `Chat with us for inquiries related to account management, website navigation, payment issues, accessing purchased templates or general questions about the website's functionality.`,
+        title: 'Prenotazioni',
+        description: `Chiamaci per prenotare un tavolo, organizzare eventi privati o per qualsiasi domanda sui nostri giochi e servizi.`,
       },
       {
-        title: 'Contact sales',
+        title: 'Informazioni',
         description:
-          'Chat with us for questions about purchases, customization options, licensing for commercial use, inquiries about specific template, etc.',
+          'Hai domande sui nostri orari, sui giochi disponibili, sui tornei o su come diventare socio? Siamo qui per te!',
       },
       {
-        title: 'Technical support',
+        title: 'Eventi e Tornei',
         description:
-          'Chat with us when facing issues like template installation, problems editing difficulties, compatibility issues with software or download errors, or other technical challenges related to using the templates.',
+          'Vuoi organizzare un torneo, partecipare a un evento speciale o proporre una nuova attività? Contattaci!',
       },
       {
-        title: 'Phone',
-        description: '+1 (234) 567-890',
-        icon: 'tabler:headset',
+        title: 'Telefono',
+        description: formatPhoneNumber(contattiData.contact.phone),
+        icon: 'tabler:phone',
       },
       {
         title: 'Email',
-        description: 'contact@support.com',
+        description: contattiData.contact.email,
         icon: 'tabler:mail',
       },
       {
-        title: 'Location',
-        description: '1234 Lorem Ipsum St, 12345, Miami, EEUU',
+        title: 'Indirizzo',
+        description: `${contattiData.address.street}, ${contattiData.address.neighborhood}, ${contattiData.address.city}`,
         icon: 'tabler:map-pin',
       },
     ]}

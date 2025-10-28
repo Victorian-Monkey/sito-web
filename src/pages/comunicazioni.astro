@@ -1,0 +1,161 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import CardAnnuncio from '~/components/CardAnnuncio.astro';
+import HeroSection from '~/components/ui/HeroSection.astro';
+import CTAButton from '~/components/ui/CTAButton.astro';
+import CategoryBadge from '~/components/ui/CategoryBadge.astro';
+import FormattedDate from '~/components/ui/FormattedDate.astro';
+import Card from '~/components/ui/Card.astro';
+import { getApiUrl, API_ENDPOINTS } from '~/config/api';
+import { getCategoryColorClasses } from '~/utils/ui-utils';
+
+// Fetch annunci data from API
+const response = await fetch(getApiUrl(API_ENDPOINTS.ANNUNCI));
+const annunciData = await response.json();
+
+const metadata = {
+  title: 'Comunicazioni - Victorian Monkey | Annunci e Eventi Roma',
+  description: 'Resta aggiornato su eventi, tornei e comunicazioni del Victorian Monkey. Annunci per i soci del ludopub di Roma a San Lorenzo.',
+  keywords: 'annunci Victorian Monkey, eventi Roma, tornei giochi Roma, comunicazioni ludopub, San Lorenzo eventi, community nerd Roma',
+  canonical: 'https://victorianmonkey.it/comunicazioni',
+  openGraph: {
+    title: 'Comunicazioni - Victorian Monkey | Annunci e Eventi',
+    description: 'Annunci, eventi e comunicazioni per i soci del Victorian Monkey.',
+    type: 'website',
+    locale: 'it_IT',
+    siteName: 'Victorian Monkey',
+    image: {
+      src: 'https://victorianmonkey.it/announcements-image.jpg',
+      alt: 'Comunicazioni Victorian Monkey'
+    }
+  },
+  ignoreTitleTemplate: true,
+};
+
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Section -->
+  <HeroSection 
+    title="📜 Annunci ai Soci"
+    subtitle="Comunicazioni, eventi e novità per la community del Victorian Monkey"
+    description="Resta aggiornato su tutto quello che succede nella nostra Tana: tornei, nuovi giochi, serate speciali e comunicazioni importanti per i soci."
+  />
+
+  <!-- Categories Filter -->
+  <div class="py-8 bg-gray-50 dark:bg-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap justify-center gap-4">
+        <button 
+          class="px-6 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-colors duration-200"
+          onclick="filterAnnouncements('all')"
+        >
+          Tutti
+        </button>
+        {annunciData.categories.map((category) => (
+          <button 
+            class={`px-6 py-2 rounded-lg font-medium transition-colors duration-200 ${getCategoryColorClasses(category.color)}`}
+            onclick={`filterAnnouncements('${category.id}')`}
+          >
+            {category.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Announcements -->
+  <div class="py-16 bg-white dark:bg-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+        ⭐ Annunci in Evidenza
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        {annunciData.announcements.filter(annuncio => annuncio.featured).map((annuncio) => (
+          <Card variant="featured" title="">
+            <div class="flex items-start justify-between mb-4">
+              <CategoryBadge color={annunciData.categories.find(c => c.id === annuncio.category)?.color || 'gray'}>
+                {annunciData.categories.find(c => c.id === annuncio.category)?.name}
+              </CategoryBadge>
+              <FormattedDate dateString={annuncio.date} />
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              {annuncio.title}
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">
+              {annuncio.excerpt}
+            </p>
+            <button 
+              class="text-purple-600 dark:text-purple-400 font-medium hover:text-purple-700 dark:hover:text-purple-300 transition-colors duration-200"
+              onclick={`toggleContent('${annuncio.id}')`}
+            >
+              Leggi tutto →
+            </button>
+            <div id={`content-${annuncio.id}`} class="hidden mt-4">
+              <div class="prose dark:prose-invert max-w-none">
+                {annuncio.content.split('\n').map(paragraph => (
+                  <p class="text-gray-700 dark:text-gray-300 mb-3">{paragraph}</p>
+                ))}
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- All Announcements -->
+  <div class="py-16 bg-gray-50 dark:bg-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+        📋 Tutti gli Annunci
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="announcements-list">
+        {annunciData.announcements.map((annuncio) => (
+          <CardAnnuncio 
+            annuncio={annuncio}
+            categoryInfo={annunciData.categories.find(c => c.id === annuncio.category)}
+            className="announcement-item"
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- RSS Feed Info -->
+  <div class="py-16 bg-white dark:bg-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+        📡 Feed RSS
+      </h2>
+      <p class="text-gray-600 dark:text-gray-300 mb-6">
+        Rimani sempre aggiornato con il nostro feed RSS degli annunci
+      </p>
+      <div class="bg-gray-100 dark:bg-secondary/20 rounded-lg p-4 max-w-md mx-auto">
+        <code class="text-sm text-gray-800 dark:text-gray-200">
+          {getApiUrl(API_ENDPOINTS.ANNUNCI).replace('/api/annunci', '/rss.xml')}
+        </code>
+      </div>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">
+        Aggiungi questo URL al tuo lettore RSS preferito
+      </p>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Funzione per filtrare gli annunci per categoria
+  function filterAnnouncements(category) {
+    const announcements = document.querySelectorAll('.announcement-item');
+    
+    announcements.forEach(announcement => {
+      const element = announcement as HTMLElement;
+      if (category === 'all' || element.dataset.category === category) {
+        element.style.display = 'block';
+      } else {
+        element.style.display = 'none';
+      }
+    });
+  }
+
+</script>

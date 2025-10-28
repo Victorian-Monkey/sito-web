@@ -1,0 +1,126 @@
+[
+    {
+      "title": "🍺 Victorian Drink",
+      "subsections": [
+        {
+          "title": "Soft Drinks",
+          "type": "beverage",
+          "items": [
+            { "name": "Acqua", "price": 1, "description": "" },
+            { "name": "Lattina Piccola", "price": 3, "description": "Pepsi, 7Up, Oransoda, The Limone/Pesca" },
+            { "name": "Ginger Beer", "price": 3, "description": "" },
+            { "name": "Tassoni", "price": 3.5, "description": "" },
+            { "name": "Red Bull", "price": 3.5, "description": "" },
+            { "name": "Monster Energy", "price": 4, "description": "" }
+          ]
+        },
+        {
+          "title": "Birre",
+          "type": "beer",
+          "items": [
+            { "name": "Chiara alla Spina", "price": 5, "description": "" },
+            { "name": "Artigianale Bottiglia", "price": 6, "description": "" },
+            { "name": "Sidro", "price": 6, "description": "" }
+          ]
+        },
+        {
+          "title": "Caffetteria",
+          "type": "cafe",
+          "items": [
+            { "name": "Caffè", "price": 1, "description": "" },
+            { "name": "Caffè Corretto", "price": 1.5, "description": "" },
+            { "name": "Tè Caldo", "price": 4, "description": "" }
+          ]
+        },
+        {
+          "title": "Cocktails - Tutti a €7",
+          "type": "cocktail",
+          "items": [
+            { "name": "Americano", "price": 7, "description": "Bitter Campari, Martini Rosso, Soda" },
+            { "name": "Black Russian", "price": 7, "description": "Vodka, Kahlua" },
+            { "name": "Boulevardier", "price": 7, "description": "Bitter Campari, Martini Rosso, Bourbon Whiskey" },
+            { "name": "Cuba Libre", "price": 7, "description": "Rum, Cola" },
+            { "name": "Daiquiri", "price": 7, "description": "Rum Bianco, Succo di Limone, Sciroppo" },
+            { "name": "Gin Tonic", "price": 7, "description": "Gin, Schweppes Tonica" },
+            { "name": "Negroni", "price": 7, "description": "Bitter Campari, Martini Rosso, Gin" },
+            { "name": "Old Fashioned", "price": 7, "description": "Bourbon Whiskey, Zucchero, Angostura, Soda" },
+            { "name": "Spritz Aperol", "price": 7, "description": "Aperol, Prosecco, Soda" },
+            { "name": "Tequila Sunrise", "price": 7, "description": "Tequila, Succo d'Arancia, Sciroppo di Granatina" }
+          ]
+        },
+        {
+          "title": "Alcolici & Liquori",
+          "type": "alcohol",
+          "items": [
+            { "name": "Bicchieri", "price": 4, "description": "" },
+            { "name": "Shot", "price": 2, "description": "" }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "🍕 Victorian Food",
+      "subsections": [
+        {
+          "title": "Stuzzichini",
+          "type": "snack",
+          "items": [
+            { "name": "Mais Fritto", "price": 2, "description": "" },
+            { "name": "Pop Corns", "price": 3, "description": "" },
+            { "name": "Nachos", "price": 5, "description": "Cheddar, Formaggio Fuso, Salsa Dip" }
+          ]
+        },
+        {
+          "title": "Fritti & Buoni",
+          "type": "snack",
+          "items": [
+            { "name": "Patatine Fritte", "price": 4, "description": "" },
+            { "name": "Anelli di Cipolla (8pz)", "price": 5, "description": "" },
+            { "name": "Frittelle di Alghe (8pz)", "price": 5, "description": "" },
+            { "name": "Frittelle Gusto Pizza (8pz)", "price": 5, "description": "" },
+            { "name": "Supplì", "price": 5, "description": "" },
+            { "name": "Nuggets (10pz)", "price": 7, "description": "" }
+          ]
+        },
+        {
+          "title": "Panini Nerd",
+          "type": "burger",
+          "items": [
+            { "name": "Hot Dog", "price": 6, "description": "Wurstel, Maionese, Ketchup, Cipolla Croccante" },
+            { "name": "Pauper", "price": 8, "description": "Burger, Bacon, Insalata, Pomodoro, Ketchup, Maionese" },
+            { "name": "Pioneer", "price": 9, "description": "Pulled Pork, Verza Rossa, Cipolla Croccante, Cheddar, Salsa BBQ" },
+            { "name": "Commander", "price": 10, "description": "Burger, Pulled Pork, Formaggio Fuso, Jalapeño, Pomodoro, Insalata, Cipolla Croccante, Salsa BBQ" },
+            { "name": "Explorer", "price": 8, "description": "Cotoletta, Salsa Caesar, Insalata" },
+            { "name": "Brawl", "price": 8, "description": "Cotoletta, Bacon, Insalata, Salsa BBQ" },
+            { "name": "Big Monkey", "price": 12, "description": "Doppio Burger, Insalata, Doppio Cheddar, Doppio Formaggio Fuso, Pomodoro, Salsa Burger" },
+            { "name": "Nerd Old Style", "price": 10, "description": "Burger, Anelli di Cipolla, Cipolla Croccante, Bacon, Insalata, Cheddar, Salsa Burger, Salsa BBQ" },
+            { "name": "Mucca & Pollo", "price": 10, "description": "Burger, Nuggets, Insalata, Pomodoro, Salsa Sweet Chili" },
+            { "name": "Diablo IV", "price": 9, "description": "Burger, Salame Ventricina Piccante, Formaggio Fuso, Jalapeño, Salsa Piccante" },
+            { "name": "Alchemy (Vegano)", "price": 10, "description": "Beyond Meat, Cipolla Croccante, Pomodoro, Insalata, Ketchup" }
+          ]
+        },
+        {
+          "title": "Pinse Romane",
+          "type": "pizza",
+          "items": [
+            { "name": "Bianca", "price": 6, "description": "Sale, Olio EVO" },
+            { "name": "Margherita", "price": 8, "description": "Pomodoro, Mozzarella" },
+            { "name": "Maialina", "price": 9, "description": "Mozzarella, Pulled Pork" },
+            { "name": "Pepperoni", "price": 9, "description": "Pomodoro, Ventricina Piccante" }
+          ]
+        },
+        {
+          "title": "Dessert",
+          "type": "dessert",
+          "items": [
+            { "name": "Waffle", "price": 4, "description": "" },
+            { "name": "Pancake", "price": 4, "description": "" },
+            { "name": "Gelato", "price": 4, "description": "" },
+            { "name": "Crema Catalana", "price": 5, "description": "" },
+            { "name": "Pinsa alla Nutella", "price": 8, "description": "" }
+          ]
+        }
+      ]
+    }
+  ]
+  

@@ -1,0 +1,27 @@
+---
+export interface Props {
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  class?: string;
+  alt?: string;
+}
+
+const { 
+  size = 'md', 
+  class: className = '',
+  alt = 'Victorian Monkey - La Tana dei Nerd di Roma'
+} = Astro.props;
+
+const sizeClasses = {
+  sm: 'h-6',
+  md: 'h-8', 
+  lg: 'h-12',
+  xl: 'h-16'
+};
+---
+
+<img 
+  src="/src/assets/images/logo-text.svg" 
+  alt={alt}
+  class={`${sizeClasses[size]} logo-text ${className}`}
+  style="object-fit: contain;"
+/>

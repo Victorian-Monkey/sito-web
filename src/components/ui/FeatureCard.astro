@@ -1,0 +1,26 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  icon: string;
+  className?: string;
+}
+
+const { title, description, icon, className = '' } = Astro.props;
+---
+
+<div class={`bg-white dark:bg-secondary rounded-lg shadow-lg p-8 ${className}`}>
+  <div class="flex items-start">
+    <div class="flex-shrink-0">
+      <span class="text-3xl">{icon}</span>
+    </div>
+    <div class="ml-4">
+      <h3 class="text-xl font-semibold text-secondary dark:text-white mb-3">
+        {title}
+      </h3>
+      <p class="text-secondary/80 dark:text-white/80">
+        {description}
+      </p>
+    </div>
+  </div>
+</div>

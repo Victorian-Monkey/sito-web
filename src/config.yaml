@@ -1,6 +1,6 @@
 site:
-  name: AstroWind
-  site: 'https://astrowind.vercel.app'
+  name: Victorian Monkey
+  site: 'https://victorianmonkey.it'
   base: '/'
   trailingSlash: false
 
@@ -9,26 +9,26 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    default: Victorian Monkey
+    template: '%s — Victorian Monkey'
+  description: "🎩 Il Victorian Monkey è il ludopub di Roma dove giocare, bere e divertirsi dal 2015. 300+ giochi da tavolo, GdR, birre artigianali e atmosfera unica a San Lorenzo."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
+    site_name: Victorian Monkey
     images:
-      - url: '~/assets/images/default.png'
+      - url: '~/assets/images/hero-image.png'
         width: 1200
         height: 628
     type: website
   twitter:
-    handle: '@arthelokyo'
-    site: '@arthelokyo'
+    handle: '@victorianmonkey'
+    site: '@victorianmonkey'
     cardType: summary_large_image
 
 i18n:
-  language: en
+  language: it
   textDirection: ltr
 
 apps:

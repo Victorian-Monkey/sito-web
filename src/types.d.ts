@@ -100,7 +100,6 @@ export interface Video {
 
 export interface Widget {
   id?: string;
-  isDark?: boolean;
   bg?: string;
   classes?: Record<string, string | Record<string, string>>;
 }
@@ -167,6 +166,7 @@ export interface Input {
   label?: string;
   autocomplete?: string;
   placeholder?: string;
+  required?: boolean;
 }
 
 export interface Textarea {
@@ -174,6 +174,7 @@ export interface Textarea {
   name?: string;
   placeholder?: string;
   rows?: number;
+  required?: boolean;
 }
 
 export interface Disclaimer {
@@ -213,7 +214,7 @@ export interface Form {
 }
 
 // WIDGETS
-export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' | 'classes'> {
+export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'classes'> {
   content?: string;
   actions?: string | CallToAction[];
   image?: string | unknown;

@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "title": "Annunci ai Soci - Victorian Monkey",
+    "description": "Comunicazioni, eventi e annunci per i soci del Victorian Monkey - La Tana dei Nerd di Roma.",
+    "lastUpdated": "2025-10-27",
+    "version": "1.0"
+  },
+  "announcements": [
+    {
+      "id": "torneo-dnd-2025",
+      "title": "🏆 Torneo D&D 2025 - Iscrizioni Aperte!",
+      "excerpt": "Torna il nostro torneo annuale di Dungeons & Dragons! Quest'anno con premi speciali e una campagna inedita.",
+      "content": "Cari soci del Victorian Monkey,\n\nSiamo entusiasti di annunciare il **Torneo D&D 2025**! Quest'anno abbiamo preparato qualcosa di speciale:\n\n🎲 **Campagna Inedita**: Una storia completamente nuova creata dai nostri master\n🏆 **Premi Speciali**: Dadi personalizzati, manuali e gadget esclusivi\n👥 **Squadre**: Massimo 4 giocatori per gruppo\n📅 **Durata**: 6 sessioni consecutive ogni sabato\n\n**Iscrizioni**: Dal 1° novembre al 15 dicembre\n**Inizio**: Sabato 4 gennaio 2026\n**Costo**: €15 per partecipante (include snack e bevande)\n\nPer iscriversi, venite al locale o chiamateci al +393513093686.\n\nBuon gioco!\nIl Team Victorian Monkey",
+      "date": "2025-10-27",
+      "dateEnd": "2025-12-15",
+      "author": "Staff Victorian Monkey",
+      "category": "eventi",
+      "tags": ["dnd", "torneo", "eventi"],
+      "featured": true,
+      "priority": "high"
+    },
+    {
+      "id": "nuovi-giochi-ottobre",
+      "title": "🎮 Nuovi Arrivi Ottobre 2025",
+      "excerpt": "Abbiamo aggiunto 15 nuovi giochi alla nostra collezione! Venite a scoprirli.",
+      "content": "Soci del Victorian Monkey,\n\nSiamo felici di annunciare l'arrivo di **15 nuovi giochi** nella nostra collezione!\n\n**Giochi da Tavolo:**\n- Wingspan: Oceania\n- Azul: Summer Pavilion\n- Cascadia\n- The Crew: Mission Deep Sea\n\n**Giochi di Ruolo:**\n- Call of Cthulhu: Starter Set\n- Pathfinder: Core Rulebook\n- Vampire: The Masquerade\n\n**Giochi per Famiglie:**\n- Ticket to Ride: Europe\n- Carcassonne: Big Box\n- Dixit: Odyssey\n\nTutti i giochi sono già disponibili per il prestito. Venite a provarli!\n\nIl Team Victorian Monkey",
+      "date": "2025-10-25",
+      "dateEnd": "2026-12-31",
+      "author": "Staff Victorian Monkey",
+      "category": "giochi",
+      "tags": ["nuovi-giochi", "collezione"],
+      "featured": false,
+      "priority": "medium"
+    },
+    {
+      "id": "serate-speciali-novembre",
+      "title": "🌟 Serate Speciali Novembre 2025",
+      "excerpt": "Calendario delle serate tematiche di novembre: Halloween, Steampunk e molto altro!",
+      "content": "Cari soci,\n\nEcco il calendario delle **Serate Speciali di Novembre**:\n\n**31 Ottobre - Halloween Night** 🎃\n- Atmosfera horror con Call of Cthulhu\n- Cocktail tematici\n- Decorazioni speciali\n\n**7 Novembre - Steampunk Night** ⚙️\n- Giochi in tema steampunk\n- Costumi incoraggiati\n- Birre artigianali speciali\n\n**14 Novembre - Notte dei Vampiri** 🧛\n- Vampire: The Masquerade\n- Atmosfera gotica\n- Menu speciale\n\nTutte le serate iniziano alle 19:00. Prenotazione consigliata!\n\nIl Team Victorian Monkey",
+      "date": "2025-10-26",
+      "dateEnd": "2025-11-30",
+      "author": "Staff Victorian Monkey",
+      "category": "eventi",
+      "tags": ["serate-speciali", "novembre", "tematiche"],
+      "featured": true,
+      "priority": "medium"
+    },
+    {
+      "id": "manutenzione-sistema",
+      "title": "🔧 Manutenzione Sistema Prenotazioni",
+      "excerpt": "Il sistema di prenotazioni online sarà temporaneamente non disponibile per manutenzione.",
+      "content": "Soci del Victorian Monkey,\n\nVi informiamo che il **sistema di prenotazioni online** sarà temporaneamente non disponibile per manutenzione programmata.\n\n**Periodo**: 30-31 ottobre 2025\n**Orario**: Dalle 00:00 alle 12:00\n\nDurante questo periodo potrete comunque:\n- Chiamarci al +393513093686\n- Venire direttamente al locale\n- Scrivere su WhatsApp\n\nCi scusiamo per il disagio.\n\nIl Team Victorian Monkey",
+      "date": "2025-10-27",
+      "dateEnd": "2025-10-31",
+      "author": "Staff Victorian Monkey",
+      "category": "comunicazioni",
+      "tags": ["manutenzione", "prenotazioni"],
+      "featured": false,
+      "priority": "high"
+    },
+    {
+      "id": "benvenuto-nuovi-soci",
+      "title": "👋 Benvenuti Nuovi Soci Ottobre!",
+      "excerpt": "Diamo il benvenuto ai 25 nuovi soci che si sono uniti alla nostra community questo mese.",
+      "content": "Cari soci del Victorian Monkey,\n\nSiamo felici di dare il benvenuto ai **25 nuovi soci** che si sono uniti alla nostra community questo ottobre!\n\nUn caloroso benvenuto a:\n- Il gruppo di studenti universitari di Informatica\n- La famiglia Rossi con i loro due figli\n- Il gruppo di colleghi di lavoro di Trastevere\n- E tutti gli altri!\n\nRicordate che siamo sempre qui per aiutarvi a:\n- Scegliere i giochi giusti\n- Imparare le regole\n- Conoscere altri giocatori\n\nNon esitate a chiedere al nostro staff!\n\nIl Team Victorian Monkey",
+      "date": "2025-10-20",
+      "dateEnd": "2026-12-31",
+      "author": "Staff Victorian Monkey",
+      "category": "comunicazioni",
+      "tags": ["nuovi-soci", "benvenuto"],
+      "featured": false,
+      "priority": "low"
+    }
+  ],
+  "categories": [
+    {
+      "id": "eventi",
+      "name": "Eventi",
+      "description": "Tornei, serate speciali e eventi tematici",
+      "color": "purple"
+    },
+    {
+      "id": "giochi",
+      "name": "Giochi",
+      "description": "Nuovi arrivi e aggiornamenti sulla collezione",
+      "color": "blue"
+    },
+    {
+      "id": "comunicazioni",
+      "name": "Comunicazioni",
+      "description": "Annunci importanti e comunicazioni del locale",
+      "color": "green"
+    }
+  ]
+}

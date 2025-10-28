@@ -2,10 +2,10 @@
 import type { Form as Props } from '~/types';
 import Button from '~/components/ui/Button.astro';
 
-const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } = Astro.props;
+const { inputs, textarea, disclaimer, button = 'Invia Messaggio', description = '' } = Astro.props;
 ---
 
-<form>
+<form id="contact-form" class="space-y-6">
   {
     inputs &&
       inputs.map(
@@ -13,7 +13,7 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
           name && (
             <div class="mb-6">
               {label && (
-                <label for={name} class="block text-sm font-medium">
+                <label for={name} class="block text-sm font-medium text-secondary dark:text-white mb-2">
                   {label}
                 </label>
               )}
@@ -23,7 +23,8 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
                 id={name}
                 autocomplete={autocomplete}
                 placeholder={placeholder}
-                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+                required={type === 'tel' || label.includes('*')}
+                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-secondary text-secondary dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
               />
             </div>
           )
@@ -33,7 +34,7 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
   {
     textarea && (
       <div>
-        <label for="textarea" class="block text-sm font-medium">
+        <label for="textarea" class="block text-sm font-medium text-secondary dark:text-white mb-2">
           {textarea.label}
         </label>
         <textarea
@@ -41,7 +42,8 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
           name={textarea.name ? textarea.name : 'message'}
           rows={textarea.rows ? textarea.rows : 4}
           placeholder={textarea.placeholder}
-          class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+          required={textarea.label?.includes('*') || false}
+          class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-secondary text-secondary dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
         />
       </div>
     )
@@ -49,17 +51,18 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
 
   {
     disclaimer && (
-      <div class="mt-3 flex items-start">
+      <div class="mt-6 flex items-start">
         <div class="flex mt-0.5">
           <input
             id="disclaimer"
             name="disclaimer"
             type="checkbox"
-            class="cursor-pointer mt-1 py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+            required
+            class="cursor-pointer mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
           />
         </div>
         <div class="ml-3">
-          <label for="disclaimer" class="cursor-pointer select-none text-sm text-gray-600 dark:text-gray-400">
+          <label for="disclaimer" class="cursor-pointer select-none text-sm text-secondary/80 dark:text-white/80">
             {disclaimer.label}
           </label>
         </div>
@@ -69,8 +72,8 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
 
   {
     button && (
-      <div class="mt-10 grid">
-        <Button variant="primary" type="submit">
+      <div class="mt-8">
+        <Button variant="primary" type="submit" class="w-full">
           {button}
         </Button>
       </div>
@@ -79,9 +82,83 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
 
   {
     description && (
-      <div class="mt-3 text-center">
-        <p class="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+      <div class="mt-4 text-center">
+        <p class="text-sm text-secondary/80 dark:text-white/80">{description}</p>
       </div>
     )
   }
 </form>
+
+<script>
+  // Phone number formatting
+  const phoneInput = document.getElementById('phone') as HTMLInputElement | null;
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function(e) {
+      const target = e.target as HTMLInputElement;
+      if (!target) return;
+      
+      let value = target.value.replace(/\D/g, '');
+      
+      // Format Italian phone number
+      if (value.length >= 3) {
+        if (value.startsWith('39')) {
+          // International format: +39 XXX XXX XXXX
+          value = '+39 ' + value.slice(2, 5) + ' ' + value.slice(5, 8) + ' ' + value.slice(8, 11);
+        } else if (value.length >= 3) {
+          // National format: XXX XXX XXXX
+          value = value.slice(0, 3) + ' ' + value.slice(3, 6) + ' ' + value.slice(6, 10);
+        }
+      }
+      
+      target.value = value;
+    });
+  }
+
+  // Form submission handling
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get('name') as string | null,
+        email: formData.get('email') as string | null,
+        phone: formData.get('phone') as string | null,
+        message: formData.get('message') as string | null,
+        disclaimer: formData.get('disclaimer') as string | null,
+      };
+      
+      // Basic validation
+      if (!data.name || !data.email || !data.phone) {
+        alert('Per favore compila tutti i campi obbligatori.');
+        return;
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email)) {
+        alert('Per favore inserisci un indirizzo email valido.');
+        return;
+      }
+      
+      // Phone validation (Italian format)
+      const phoneRegex = /^(\+39\s)?[0-9]{3}\s[0-9]{3}\s[0-9]{4}$/;
+      if (!phoneRegex.test(data.phone)) {
+        alert('Per favore inserisci un numero di telefono valido.');
+        return;
+      }
+      
+      // Disclaimer check
+      if (!data.disclaimer) {
+        alert('Devi accettare i termini per inviare il messaggio.');
+        return;
+      }
+      
+      // Show success message (in a real app, you'd send this to a server)
+      alert('Messaggio inviato con successo! Ti ricontatteremo presto.');
+      form.reset();
+    });
+  }
+</script>

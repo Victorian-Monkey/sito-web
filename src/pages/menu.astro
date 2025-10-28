@@ -1,0 +1,270 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroSection from '~/components/ui/HeroSection.astro';
+import CTAButton from '~/components/ui/CTAButton.astro';
+import Card from '~/components/ui/Card.astro';
+import MenuItem from '~/components/ui/MenuItem.astro';
+import { getApiUrl, API_ENDPOINTS } from '~/config/api';
+import { formatPrice } from '~/utils/ui-utils';
+
+// Fetch menu data from API
+const response = await fetch(getApiUrl(API_ENDPOINTS.MENU));
+const menuData = await response.json();
+
+const metadata = {
+  title: 'Menu - Victorian Monkey | Cibo, Drink e Birre Artigianali Roma',
+  description: 'Scopri il menu completo del Victorian Monkey: birre artigianali, cocktail, cibo e snack per accompagnare le tue serate di gioco a San Lorenzo, Roma.',
+  keywords: 'menu Victorian Monkey, birre artigianali Roma, cocktail Roma, cibo San Lorenzo, menu ludopub Roma, drink Roma',
+  canonical: 'https://victorianmonkey.it/menu',
+  openGraph: {
+    title: 'Menu - Victorian Monkey | Cibo e Drink Roma',
+    description: 'Menu completo del ludopub: birre artigianali, cocktail, cibo e snack per le tue serate di gioco.',
+    type: 'website',
+    locale: 'it_IT',
+    siteName: 'Victorian Monkey',
+    image: {
+      src: 'https://victorianmonkey.it/menu-image.jpg',
+      alt: 'Menu Victorian Monkey'
+    }
+  },
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Section -->
+  <HeroSection 
+    title="🍻 Menù del Victorian Monkey"
+    subtitle="Cibo, drink e incantesimi di livello superiore"
+    description="Benvenuto al banchetto ufficiale della Tana!<br>Qui puoi consultare tutti i piatti e le bevande del Victorian Monkey — dagli snack per le partite infinite, ai panini epici, fino alle pozioni artigianali per recuperare punti energia.<br><br>Tutto ciò che vedi è disponibile direttamente al bar o tramite il nostro staff al tavolo.<br>Scegli, ordina e… buon tiro di iniziativa! 🎲"
+  />
+
+  <!-- Menu Sections -->
+  <div class="py-16 bg-gray-50 dark:bg-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Cibo Section -->
+      <div class="mb-16">
+        <div class="text-center mb-8">
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            🧀 Cibo
+          </h2>
+          <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Dalla cucina arrivano panini leggendari, piadine, taglieri e altre prelibatezze nerd-approved.<br>
+            Per chi ha fame dopo un dungeon, o semplicemente dopo una giornata a Roma.
+          </p>
+          <p class="text-base text-gray-500 dark:text-gray-400 mt-2">
+            📜 Lista piatti:
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {menuData.find(section => section.title === "🍕 Victorian Food")?.subsections.filter(sub => 
+            sub.type === "snack" || sub.type === "burger" || sub.type === "pizza"
+          ).map((subsection) => (
+            <Card title={subsection.title}>
+              <div class="space-y-4">
+                {subsection.items.map((item) => (
+                  <MenuItem 
+                    name={item.name}
+                    description={item.description}
+                    price={item.price}
+                  />
+                ))}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <!-- Drink & Cocktail Section -->
+      <div class="mb-16">
+        <div class="text-center mb-8">
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            🍸 Drink & Cocktail
+          </h2>
+          <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Dai classici intramontabili alle pozioni della casa, messe a punto dai nostri alchimisti da bancone.<br>
+            Ogni drink ha la sua storia (e un effetto speciale).
+          </p>
+          <p class="text-base text-gray-500 dark:text-gray-400 mt-2">
+            📜 Lista drink:
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {menuData.find(section => section.title === "🍺 Victorian Drink")?.subsections.filter(sub => 
+            sub.type === "beverage" || sub.type === "cafe" || sub.type === "cocktail" || sub.type === "alcohol"
+          ).map((subsection) => (
+            <Card title={subsection.title}>
+              <div class="space-y-4">
+                {subsection.items.map((item) => (
+                  <MenuItem 
+                    name={item.name}
+                    description={item.description}
+                    price={item.price}
+                  />
+                ))}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <!-- Birre Artigianali Section -->
+      <div class="mb-16">
+        <div class="text-center mb-8">
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            🍺 Birre artigianali
+          </h2>
+          <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Niente pozioni scadenti qui: solo birre selezionate con cura, spillate come si deve e sempre pronte per un brindisi critico.
+          </p>
+          <p class="text-base text-gray-500 dark:text-gray-400 mt-2">
+            📜 Lista birre:
+          </p>
+        </div>
+        
+        <div class="max-w-2xl mx-auto">
+          <div class="bg-white dark:bg-secondary rounded-lg shadow-lg p-8">
+            <div class="space-y-4">
+              {menuData.find(section => section.title === "🍺 Victorian Drink")?.subsections.find(sub => sub.type === "beer")?.items.map((item) => (
+                <div class="flex justify-between items-start">
+                  <div class="flex-1">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">
+                      {item.name}
+                    </h4>
+                    {item.description && (
+                      <p class="text-sm text-gray-600 dark:text-gray-300">
+                        {item.description}
+                      </p>
+                    )}
+                  </div>
+                  <div class="ml-4 text-right">
+                    <span class="font-bold text-primary dark:text-primary">
+                      {formatPrice(item.price)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dolci Section -->
+      <div class="mb-16">
+        <div class="text-center mb-8">
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            🍰 Dolci
+          </h2>
+          <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Perché ogni missione merita un lieto fine zuccherato.
+          </p>
+          <p class="text-base text-gray-500 dark:text-gray-400 mt-2">
+            📜 Lista dolci:
+          </p>
+        </div>
+        
+        <div class="max-w-2xl mx-auto">
+          <div class="bg-white dark:bg-secondary rounded-lg shadow-lg p-8">
+            <div class="space-y-4">
+              {menuData.find(section => section.title === "🍕 Victorian Food")?.subsections.find(sub => sub.type === "dessert")?.items.map((item) => (
+                <div class="flex justify-between items-start">
+                  <div class="flex-1">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">
+                      {item.name}
+                    </h4>
+                    {item.description && (
+                      <p class="text-sm text-gray-600 dark:text-gray-300">
+                        {item.description}
+                      </p>
+                    )}
+                  </div>
+                  <div class="ml-4 text-right">
+                    <span class="font-bold text-primary dark:text-primary">
+                      {formatPrice(item.price)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Special Notes -->
+  <div class="py-16 bg-white dark:bg-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Allergeni -->
+        <Card variant="gradient" className="from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20" title="">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            ⚠️ Allergeni e ingredienti
+          </h2>
+          <p class="text-gray-700 dark:text-gray-300">
+            Tutti i piatti e le bevande possono contenere allergeni.<br>
+            Consulta le informazioni dettagliate nel menù o chiedi al nostro staff, sempre pronto ad aiutarti (e non solo nei tiri salvezza).
+          </p>
+        </Card>
+
+        <!-- Consumo Minimo -->
+        <Card variant="gradient" className="from-green-50 to-primary/10 dark:from-green-900/20 dark:to-primary/20" title="">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            ❤️ Consumo minimo
+          </h2>
+          <div class="space-y-4">
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-white mb-2">
+                Feriali: €6
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">
+                Dal lunedì al giovedì
+              </p>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-white mb-2">
+                Weekend: €8
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">
+                Dal venerdì alla domenica
+              </p>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300 text-sm mt-4">
+              Il contributo minimo sostiene la Tana e ti dà accesso a tutti i nostri giochi, eventi e serate a tema.
+            </p>
+          </div>
+        </Card>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="py-16 bg-gradient-to-r from-primary to-secondary">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">
+        🎲 Vieni a Provare i Nostri Sapori!
+      </h2>
+      <p class="text-xl text-white/80 mb-8">
+        Prenota un tavolo e vieni a gustare i nostri piatti accompagnati da una partita
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <CTAButton 
+          href="/contatti" 
+          text="📞 Prenota un Tavolo"
+          variant="outline"
+        />
+        <CTAButton 
+          href="/contatti" 
+          text="🗺️ Come Raggiungerci"
+          variant="outline"
+        />
+      </div>
+    </div>
+  </div>
+</Layout>

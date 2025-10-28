@@ -1,0 +1,72 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  price?: number;
+  icon?: string;
+  variant?: 'default' | 'gradient' | 'featured';
+  className?: string;
+}
+
+const { 
+  title, 
+  description, 
+  price,
+  icon,
+  variant = 'default',
+  className = ''
+} = Astro.props;
+
+const variantClasses = {
+  default: 'bg-white dark:bg-secondary',
+  gradient: 'bg-gradient-to-r from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20',
+  featured: 'bg-gradient-to-r from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20 border-l-4 border-primary'
+};
+
+const getGradientClasses = (className: string) => {
+  if (className.includes('from-red-50')) return 'bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20';
+  if (className.includes('from-green-50')) return 'bg-gradient-to-r from-green-50 to-primary/10 dark:from-green-900/20 dark:to-primary/20';
+  return variantClasses[variant];
+};
+
+const formatPrice = (price: number) => {
+  return `€${price.toFixed(2)}`;
+};
+---
+
+<div class={`rounded-lg shadow-lg p-8 ${variant === 'gradient' ? getGradientClasses(className) : variantClasses[variant]} ${className}`}>
+  {icon && (
+    <div class="flex items-start mb-4">
+      <div class="flex-shrink-0">
+        <span class="text-3xl">{icon}</span>
+      </div>
+      <div class="ml-4">
+        <h3 class="text-xl font-semibold text-secondary dark:text-white mb-3">
+          {title}
+        </h3>
+      </div>
+    </div>
+  )}
+  
+  {!icon && title && (
+    <h3 class="text-xl font-bold text-secondary dark:text-white mb-6 border-b border-gray-200 dark:border-gray-700 pb-3">
+      {title}
+    </h3>
+  )}
+  
+  {description && (
+    <p class="text-secondary/80 dark:text-white/80 mb-4">
+      {description}
+    </p>
+  )}
+  
+  {price !== undefined && (
+    <div class="text-right">
+      <span class="font-bold text-purple-600 dark:text-purple-400">
+        {formatPrice(price)}
+      </span>
+    </div>
+  )}
+  
+  <slot />
+</div>

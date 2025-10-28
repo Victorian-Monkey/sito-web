@@ -1,24 +1,171 @@
 ---
-import Layout from '~/layouts/Layout.astro';
+import Layout from '~/layouts/PageLayout.astro';
 import { getHomePermalink } from '~/utils/permalinks';
 
-const title = `Error 404`;
+const title = `Errore 404 - Victorian Monkey`;
 ---
 
 <Layout metadata={{ title }}>
-  <section class="flex items-center h-full p-16">
+  <section class="flex items-center h-full p-16 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20">
     <div class="container flex flex-col items-center justify-center px-5 mx-auto my-8">
-      <div class="max-w-md text-center">
-        <h2 class="mb-8 font-bold text-9xl">
-          <span class="sr-only">Error</span>
-          <span class="text-primary">404</span>
-        </h2>
-        <p class="text-3xl font-semibold md:text-3xl">Sorry, we couldn't find this page.</p>
-        <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
-          But dont worry, you can find plenty of other things on our homepage.
-        </p>
-        <a rel="noopener noreferrer" href={getHomePermalink()} class="btn ml-4">Back to homepage</a>
+      <div class="max-w-2xl text-center">
+        <!-- Error Number -->
+        <div class="mb-8">
+          <h1 class="text-8xl md:text-9xl font-bold text-purple-600 dark:text-purple-400 mb-4">
+            404
+          </h1>
+          <p class="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-white mb-2">
+            ⚠️ Errore 404 – Pagina non trovata
+          </p>
+          <p class="text-lg text-gray-600 dark:text-gray-300 italic">
+            "Hai tirato 1 per navigazione." 🎲
+          </p>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-8">
+          <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+            Ops! Sembra che questa pagina sia finita in un'altra dimensione…
+          </p>
+          <p class="text-base text-gray-600 dark:text-gray-400">
+            Forse è stata mangiata da un Mimic, o si è semplicemente persa nei meandri del multiverso digitale.
+          </p>
+        </div>
+
+        <!-- Encouragement -->
+        <div class="mb-8">
+          <p class="text-lg font-semibold text-gray-800 dark:text-white mb-6">
+            Ma non temere, eroe!<br>
+            Puoi sempre tornare alla Tana dei Nerd e riprendere la tua avventura da lì.
+          </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a 
+            href={getHomePermalink()} 
+            class="inline-flex items-center px-8 py-4 border-2 border-purple-600 text-lg font-medium rounded-md text-purple-600 hover:bg-purple-600 hover:text-white transition-colors duration-200"
+          >
+            👉 Torna alla Home
+          </a>
+          <a 
+            href="/menu" 
+            class="inline-flex items-center px-8 py-4 border-2 border-orange-600 text-lg font-medium rounded-md text-orange-600 hover:bg-orange-600 hover:text-white transition-colors duration-200"
+          >
+            🍻 O scopri il nostro Menù
+          </a>
+          <a 
+            href="/about" 
+            class="inline-flex items-center px-8 py-4 border-2 border-blue-600 text-lg font-medium rounded-md text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-200"
+          >
+            🧭 Oppure visita la pagina Chi siamo
+          </a>
+        </div>
+
+        <!-- Fun Element -->
+        <div class="mt-12 text-center">
+          <div class="inline-block bg-white dark:bg-secondary rounded-lg shadow-lg p-6">
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+              💡 Pro tip: Controlla sempre l'URL prima di fare il tiro di navigazione!
+            </p>
+            <div class="flex justify-center space-x-2 dice-group">
+              <span class="dice-emoji text-2xl hover:animate-spin-slow" data-dice="1">🎲</span>
+              <span class="dice-emoji text-2xl hover:animate-spin-slow" data-dice="2">🎲</span>
+              <span class="dice-emoji text-2xl hover:animate-spin-slow" data-dice="3">🎲</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </Layout>
+
+<style>
+  /* Animazione personalizzata per i dadi */
+  @keyframes diceRoll {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(90deg) scale(1.1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    75% { transform: rotate(270deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  @keyframes diceRollSlow {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(90deg) scale(1.05); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    75% { transform: rotate(270deg) scale(1.05); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  .dice-emoji {
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .dice-emoji:hover {
+    animation: diceRoll 0.6s ease-in-out;
+    transform: scale(1.2);
+  }
+
+  .animate-spin-slow {
+    animation: diceRollSlow 2s linear infinite;
+  }
+
+  /* Animazione aggiuntiva per il gruppo di dadi */
+  .dice-group:hover .dice-emoji:not(:hover) {
+    animation: diceRollSlow 1s ease-in-out;
+  }
+
+  /* Effetto di rimbalzo quando l'animazione finisce */
+  .dice-emoji:active {
+    animation: diceRoll 0.3s ease-in-out;
+  }
+</style>
+
+<script>
+  // Animazione interattiva per i dadi
+  document.addEventListener('DOMContentLoaded', () => {
+    const diceElements = document.querySelectorAll('.dice-emoji');
+    
+    diceElements.forEach(dice => {
+      const diceElement = dice as HTMLElement;
+      
+      // Animazione al click
+      diceElement.addEventListener('click', () => {
+        diceElement.style.animation = 'diceRoll 0.6s ease-in-out';
+        setTimeout(() => {
+          diceElement.style.animation = '';
+        }, 600);
+      });
+
+      // Animazione casuale ogni tanto
+      setInterval(() => {
+        if (Math.random() < 0.1) { // 10% di probabilità ogni 3 secondi
+          diceElement.style.animation = 'diceRollSlow 1s ease-in-out';
+          setTimeout(() => {
+            diceElement.style.animation = '';
+          }, 1000);
+        }
+      }, 3000);
+    });
+
+    // Animazione di gruppo quando si passa sopra l'area
+    const diceGroup = document.querySelector('.dice-group');
+    if (diceGroup) {
+      diceGroup.addEventListener('mouseenter', () => {
+        diceElements.forEach((dice, index) => {
+          const diceElement = dice as HTMLElement;
+          setTimeout(() => {
+            diceElement.style.animation = 'diceRoll 0.5s ease-in-out';
+            setTimeout(() => {
+              diceElement.style.animation = '';
+            }, 500);
+          }, index * 100); // Animazione a cascata
+        });
+      });
+    }
+  });
+</script>

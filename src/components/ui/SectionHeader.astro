@@ -1,0 +1,39 @@
+---
+export interface Props {
+  title: string;
+  subtitle?: string;
+  description?: string;
+  centered?: boolean;
+  className?: string;
+}
+
+const { 
+  title, 
+  subtitle, 
+  description, 
+  centered = true,
+  className = ''
+} = Astro.props;
+
+const containerClasses = centered ? 'text-center' : '';
+---
+
+<div class={`${containerClasses} ${className}`}>
+  <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+    {title}
+  </h2>
+  
+  {subtitle && (
+    <p class="text-lg text-gray-600 dark:text-gray-300 mb-4">
+      {subtitle}
+    </p>
+  )}
+  
+  {description && (
+    <p class="text-base text-gray-500 dark:text-gray-400">
+      {description}
+    </p>
+  )}
+  
+  <slot />
+</div>

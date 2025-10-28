@@ -1,0 +1,32 @@
+---
+export interface Props {
+  name: string;
+  description?: string;
+  price: number;
+  className?: string;
+}
+
+const { name, description, price, className = '' } = Astro.props;
+
+const formatPrice = (price: number) => {
+  return `€${price.toFixed(2)}`;
+};
+---
+
+<div class={`flex justify-between items-start ${className}`}>
+  <div class="flex-1">
+    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">
+      {name}
+    </h4>
+    {description && (
+      <p class="text-sm text-gray-600 dark:text-gray-300">
+        {description}
+      </p>
+    )}
+  </div>
+  <div class="ml-4 text-right">
+    <span class="font-bold text-primary dark:text-primary">
+      {formatPrice(price)}
+    </span>
+  </div>
+</div>

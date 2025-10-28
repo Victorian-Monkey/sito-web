@@ -1,0 +1,131 @@
+{
+  "metadata": {
+    "title": "Regolamento - Victorian Monkey",
+    "description": "Il regolamento del Victorian Monkey - La Tana dei Nerd. Scopri le regole per una serata perfetta nel nostro locale di giochi da tavolo a Roma.",
+    "lastUpdated": "2024-01-15",
+    "version": "1.0"
+  },
+  "hero": {
+    "title": "⚖️ Regolamento del Victorian Monkey",
+    "subtitle": "La Tana dei Nerd (e delle buone maniere)",
+    "description": "Benvenuto nella nostra Tana! Qui il divertimento è serio, ma sempre nel rispetto reciproco. Per garantire a tutti una serata piacevole e un ambiente accogliente, ti chiediamo di leggere e rispettare queste semplici regole. Niente di noioso — promesso! 🎩"
+  },
+  "rules": [
+    {
+      "id": "tesseramento",
+      "number": 1,
+      "title": "Tesseramento obbligatorio",
+      "icon": "🪙",
+      "iconColor": "yellow",
+      "content": [
+        "Per entrare al Victorian Monkey è necessario essere soci tesserati.",
+        "La tessera è personale e valida per l'anno solare in corso.",
+        "Puoi farla o rinnovarla comodamente online oppure direttamente al locale."
+      ],
+      "highlight": "👉 Senza tessera, niente dadi!"
+    },
+    {
+      "id": "consumazione",
+      "number": 2,
+      "title": "Consumazione minima",
+      "icon": "🍻",
+      "iconColor": "green",
+      "content": [
+        "Dal lunedì al giovedì: consumazione minima €6",
+        "Dal venerdì alla domenica: consumazione minima €8",
+        "Puoi scegliere liberamente tra drink, cibo o dessert."
+      ],
+      "highlight": "Lo scopo non è fare i conti, ma sostenere la Tana che amiamo ❤️"
+    },
+    {
+      "id": "giochi",
+      "number": 3,
+      "title": "Uso dei giochi da tavolo",
+      "icon": "🎲",
+      "iconColor": "blue",
+      "content": [
+        "Puoi prendere un gioco alla volta.",
+        "Restituiscilo completo e in ordine, come un vero eroe del party.",
+        "Se manca un pezzo o trovi qualcosa di danneggiato, avvisa lo staff: non ti lanceremo il dado da 20 in testa, promesso."
+      ],
+      "highlight": "Ricorda: i giochi sono di tutti. Trattali come il tuo +1."
+    },
+    {
+      "id": "prenotazioni",
+      "number": 4,
+      "title": "Prenotazioni e tavoli",
+      "icon": "🧙",
+      "iconColor": "purple",
+      "content": [
+        "Ti consigliamo di prenotare, specialmente nel weekend.",
+        "Le prenotazioni si gestiscono online o in loco.",
+        "Se arrivi in ritardo, avvisaci: non manderemo i draghi, ma potremmo dover liberare il tavolo."
+      ],
+      "highlight": null
+    },
+    {
+      "id": "comportamento",
+      "number": 5,
+      "title": "Comportamento in Tana",
+      "icon": "🧑‍🤝‍🧑",
+      "iconColor": "red",
+      "content": [
+        "Rispetto e convivialità sono le vere skill che ci interessano.",
+        "Niente linguaggio offensivo, atteggiamenti molesti o comportamenti che disturbano il gioco o gli altri soci."
+      ],
+      "highlight": "Il Victorian Monkey è una zona neutrale: qui conta solo tirare alto."
+    },
+    {
+      "id": "social",
+      "number": 6,
+      "title": "Foto, tag e social",
+      "icon": "🪩",
+      "iconColor": "pink",
+      "content": [
+        "Scatta pure, immortala la tua serata e condividila!"
+      ],
+      "highlight": "Se ci tagghi su Instagram, lo staff ti offrirà uno shot omaggio 🍸",
+      "note": "(Perché il networking sociale va incentivato, soprattutto con alcol.)"
+    },
+    {
+      "id": "aggiuntive",
+      "number": 7,
+      "title": "Regole aggiuntive",
+      "icon": "⚙️",
+      "iconColor": "gray",
+      "content": [
+        "Lo staff può chiedere di interrompere attività che disturbano, trattenere un gioco danneggiato o sospendere il tesseramento in caso di comportamenti scorretti."
+      ],
+      "highlight": "È raro, ma succede: la Tana va protetta come un artefatto leggendario."
+    },
+    {
+      "id": "divertiti",
+      "number": 8,
+      "title": "E soprattutto… divertiti!",
+      "icon": "❤️",
+      "iconColor": "red",
+      "content": [
+        "Siamo qui per questo.",
+        "Gioca, chiacchiera, bevi qualcosa, conosci altri nerd e sentiti a casa."
+      ],
+      "highlight": "Perché il Victorian Monkey non è solo un locale: è una community che gioca insieme dal 2015.",
+      "special": true
+    }
+  ],
+  "cta": {
+    "title": "Pronto a diventare socio?",
+    "description": "Unisciti alla community del Victorian Monkey e inizia la tua avventura nella Tana dei Nerd!",
+    "buttons": [
+      {
+        "text": "🪙 Fatti la tessera",
+        "href": "#membership",
+        "variant": "primary"
+      },
+      {
+        "text": "📍 Vieni a trovarci",
+        "href": "/contact",
+        "variant": "secondary"
+      }
+    ]
+  }
+}

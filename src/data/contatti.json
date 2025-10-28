@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "Contatti - Victorian Monkey",
+    "description": "Informazioni di contatto e come raggiungere il Victorian Monkey - La Tana dei Nerd di Roma.",
+    "lastUpdated": "2024-01-15",
+    "version": "1.0"
+  },
+  "address": {
+    "street": "Via dei Piceni 29",
+    "neighborhood": "San Lorenzo",
+    "city": "Roma",
+    "country": "Italia"
+  },
+  "contact": {
+    "phone": "+393513093686",
+    "email": "info@victorianmonkey.org",
+    "website": "https://victorianmonkey.org"
+  },
+  "socialMedia": [
+    {
+      "platform": "facebook",
+      "url": "https://facebook.com/victorianmonkey"
+    },
+    {
+      "platform": "instagram",
+      "url": "https://instagram.com/victorianmonkey"
+    },
+    {
+      "platform": "discord",
+      "url": null
+    },
+    {
+      "platform": "youtube",
+      "url": null
+    }
+  ],
+  "openingHours": [
+    {
+      "type": "weekdays",
+      "days": ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì"],
+      "hours": {
+        "open": "19:00",
+        "close": "00:00"
+      }
+    },
+    {
+      "type": "weekend",
+      "days": ["Venerdì", "Sabato"],
+      "hours": {
+        "open": "19:00",
+        "close": "02:00"
+      }
+    }
+  ],
+  "transport": {
+    "metro": {
+      "line": "Linea B",
+      "station": "Tiburtina",
+      "walkingTime": "10 minuti"
+    },
+    "bus": [
+      {
+        "lines": ["71", "492", "545"],
+        "stop": "Via dei Piceni"
+      }
+    ],
+    "parking": [
+      {
+        "type": "free",
+        "description": "Parcheggio gratuito disponibile in zona"
+      }
+    ]
+  }
+}

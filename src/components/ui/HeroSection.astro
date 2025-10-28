@@ -1,0 +1,68 @@
+---
+export interface Props {
+  title: string;
+  subtitle?: string;
+  description?: string;
+  gradient?: 'purple-blue' | 'blue-purple' | 'green-blue' | 'orange-red';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+  logo?: boolean;
+}
+
+const { 
+  title, 
+  subtitle, 
+  description, 
+  gradient = 'purple-blue',
+  size = 'lg',
+  className = '',
+  logo = false
+} = Astro.props;
+
+const gradientClasses = {
+  'purple-blue': 'bg-gradient-to-r from-primary to-secondary',
+  'blue-purple': 'bg-gradient-to-r from-secondary to-primary',
+  'green-blue': 'bg-gradient-to-r from-primary to-secondary',
+  'orange-red': 'bg-gradient-to-r from-primary to-secondary'
+};
+
+const sizeClasses = {
+  sm: 'py-12',
+  md: 'py-16',
+  lg: 'py-20'
+};
+
+const titleSizeClasses = {
+  sm: 'text-2xl md:text-3xl',
+  md: 'text-3xl md:text-4xl',
+  lg: 'text-4xl md:text-5xl'
+};
+---
+
+<div class={`${gradientClasses[gradient]} ${sizeClasses[size]} ${className}`}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h1 class={`${titleSizeClasses[size]} font-bold text-white mb-6`}>
+      {logo && (
+        <div class="flex flex-col items-center justify-center mb-4">
+          <img src="/src/assets/images/monkey-logo.svg" alt="Victorian Monkey Logo" class="w-12 h-12 mb-3" />
+          <img src="/src/assets/images/logo-text.svg" alt="Victorian Monkey - La Tana dei Nerd di Roma" class="h-8 md:h-10 logo-text" style="object-fit: contain;" />
+        </div>
+      )}
+      {!logo && title}
+    </h1>
+    
+    {subtitle && (
+      <p class="text-xl text-white/90 mb-4">
+        {subtitle}
+      </p>
+    )}
+    
+    {description && (
+      <p class="text-lg text-white/80 max-w-3xl mx-auto">
+        <Fragment set:html={description} />
+      </p>
+    )}
+    
+    <slot />
+  </div>
+</div>

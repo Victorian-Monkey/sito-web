@@ -1,0 +1,20 @@
+---
+export interface Props {
+  type: 'Organization' | 'LocalBusiness' | 'Event' | 'Menu' | 'BreadcrumbList';
+  data: any;
+}
+
+const { type, data } = Astro.props;
+
+const getStructuredData = (type: string, data: any) => {
+  const baseSchema = {
+    "@context": "https://schema.org",
+    "@type": type,
+    ...data
+  };
+
+  return JSON.stringify(baseSchema);
+};
+---
+
+<script type="application/ld+json" set:html={getStructuredData(type, data)} />

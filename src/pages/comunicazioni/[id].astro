@@ -1,0 +1,149 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import { getApiUrl, API_ENDPOINTS } from '~/config/api';
+import { marked } from 'marked';
+
+interface Announcement {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  date: string;
+  dateEnd: string;
+  author: string;
+  category: string;
+  tags: string[];
+  featured: boolean;
+  priority: string;
+  categoryInfo?: {
+    id: string;
+    name: string;
+    color: string;
+  };
+}
+
+export async function getStaticPaths() {
+  // Fetch all announcements to generate static paths
+  const response = await fetch(getApiUrl(API_ENDPOINTS.ANNUNCI));
+  const annunciData = await response.json();
+  
+  return annunciData.announcements.map((annuncio: Announcement) => ({
+    params: { id: annuncio.id },
+    props: { annuncio },
+  }));
+}
+
+const { annuncio }: { annuncio: Announcement } = Astro.props;
+
+// Helper function to get category color classes
+const getCategoryColorClasses = (color: string) => {
+  const colorMap: Record<string, string> = {
+    purple: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+    blue: 'bg-primary/20 text-primary dark:bg-primary/30 dark:text-primary',
+    green: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  };
+  return colorMap[color] || 'bg-gray-100 text-gray-800 dark:bg-secondary/20 dark:text-gray-200';
+};
+
+// Helper function to format date
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('it-IT', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+
+const metadata = {
+  title: `${annuncio.title} - Victorian Monkey`,
+  description: annuncio.excerpt,
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-r from-primary to-secondary py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between mb-6">
+        <a 
+          href="/annunci" 
+          class="inline-flex items-center text-white/80 hover:text-white transition-colors duration-200"
+        >
+          <svg class="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Torna agli annunci
+        </a>
+        
+        <span class={`px-4 py-2 rounded-full text-sm font-medium ${getCategoryColorClasses(annuncio.categoryInfo?.color || 'gray')}`}>
+          {annuncio.categoryInfo?.name || 'Categoria'}
+        </span>
+      </div>
+      
+      <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+        {annuncio.title}
+      </h1>
+      
+      <div class="flex items-center text-white/80 text-sm">
+        <span class="mr-4">
+          📅 Pubblicato: {formatDate(annuncio.date)}
+        </span>
+        <span>
+          ⏰ Scade: {formatDate(annuncio.dateEnd)}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="py-16 bg-gray-50 dark:bg-secondary">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white dark:bg-secondary rounded-lg shadow-xl p-8">
+        
+        {annuncio.priority === 'high' && (
+          <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-red-800 dark:text-red-200 font-semibold">
+                Annuncio Importante
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div class="prose dark:prose-invert max-w-none" set:html={marked.parse(annuncio.content)}></div>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            <div class="text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-0">
+              <p>Autore: <span class="font-medium">{annuncio.author}</span></p>
+              {annuncio.tags && annuncio.tags.length > 0 && (
+                <p class="mt-1">
+                  Tag: {annuncio.tags.map((tag: string) => `#${tag}`).join(', ')}
+                </p>
+              )}
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-3">
+              <a
+                href="/annunci"
+                class="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-secondary hover:bg-gray-50 dark:hover:bg-secondary/80 transition-colors duration-200"
+              >
+                📜 Tutti gli annunci
+              </a>
+              <a
+                href="/contact"
+                class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary/90 transition-colors duration-200"
+              >
+                📞 Contattaci
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

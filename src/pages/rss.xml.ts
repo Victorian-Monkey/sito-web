@@ -1,37 +1,55 @@
-import { getRssString } from '@astrojs/rss';
+import type { APIRoute } from 'astro';
+import { getApiUrl, API_ENDPOINTS } from '~/config/api';
 
-import { SITE, METADATA, APP_BLOG } from 'astrowind:config';
-import { fetchPosts } from '~/utils/blog';
-import { getPermalink } from '~/utils/permalinks';
+export const GET: APIRoute = async () => {
+  try {
+    // Fetch annunci data from API
+    const response = await fetch(getApiUrl(API_ENDPOINTS.ANNUNCI));
+    const annunciData = await response.json();
 
-export const GET = async () => {
-  if (!APP_BLOG.isEnabled) {
-    return new Response(null, {
-      status: 404,
-      statusText: 'Not found',
+    // Generate RSS XML
+    const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>${annunciData.metadata.title}</title>
+    <description>${annunciData.metadata.description}</description>
+    <link>${getApiBaseUrl()}</link>
+    <language>it-IT</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <atom:link href="${getApiBaseUrl()}/rss.xml" rel="self" type="application/rss+xml"/>
+    
+    ${annunciData.announcements.map(annuncio => `
+    <item>
+      <title><![CDATA[${annuncio.title}]]></title>
+      <description><![CDATA[${annuncio.excerpt}]]></description>
+      <link>${getApiBaseUrl()}/annunci#${annuncio.id}</link>
+      <guid isPermaLink="false">${annuncio.id}</guid>
+      <pubDate>${new Date(annuncio.date).toUTCString()}</pubDate>
+      <category>${annunciData.categories.find(c => c.id === annuncio.category)?.name}</category>
+      ${annuncio.tags.map(tag => `<category>${tag}</category>`).join('')}
+    </item>`).join('')}
+  </channel>
+</rss>`;
+
+    return new Response(rssXml, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/rss+xml; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600',
+      },
+    });
+  } catch (error) {
+    return new Response('Error generating RSS feed', {
+      status: 500,
+      headers: {
+        'Content-Type': 'text/plain',
+      },
     });
   }
-
-  const posts = await fetchPosts();
-
-  const rss = await getRssString({
-    title: `${SITE.name}’s Blog`,
-    description: METADATA?.description || '',
-    site: import.meta.env.SITE,
-
-    items: posts.map((post) => ({
-      link: getPermalink(post.permalink, 'post'),
-      title: post.title,
-      description: post.excerpt,
-      pubDate: post.publishDate,
-    })),
-
-    trailingSlash: SITE.trailingSlash,
-  });
-
-  return new Response(rss, {
-    headers: {
-      'Content-Type': 'application/xml',
-    },
-  });
 };
+
+function getApiBaseUrl(): string {
+  return import.meta.env.DEV 
+    ? 'http://localhost:4321' 
+    : (import.meta.env.SITE || 'https://victorianmonkey.com');
+}
