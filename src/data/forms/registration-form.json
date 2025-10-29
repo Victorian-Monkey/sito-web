@@ -1,0 +1,127 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "name": "nome",
+      "label": "Nome",
+      "placeholder": "Il tuo nome",
+      "required": true,
+      "validation": {
+        "required": true,
+        "requiredMessage": "Il nome è obbligatorio",
+        "minLength": 2,
+        "minLengthMessage": "Il nome deve essere di almeno 2 caratteri"
+      },
+      "columnClass": "md:col-span-6"
+    },
+    {
+      "type": "text",
+      "name": "cognome",
+      "label": "Cognome",
+      "placeholder": "Il tuo cognome",
+      "required": true,
+      "validation": {
+        "required": true,
+        "requiredMessage": "Il cognome è obbligatorio",
+        "minLength": 2,
+        "minLengthMessage": "Il cognome deve essere di almeno 2 caratteri"
+      },
+      "columnClass": "md:col-span-6"
+    },
+    {
+      "type": "email",
+      "name": "email",
+      "label": "Email",
+      "placeholder": "tua.email@esempio.com",
+      "required": true,
+      "validation": {
+        "required": true,
+        "email": true,
+        "emailMessage": "Inserisci un indirizzo email valido"
+      },
+      "columnClass": "md:col-span-6"
+    },
+    {
+      "type": "tel",
+      "name": "telefono",
+      "label": "Numero di telefono",
+      "placeholder": "351 309 3686",
+      "required": true,
+      "validation": {
+        "required": true,
+        "phone": true,
+        "phoneMessage": "Inserisci un numero di telefono valido"
+      },
+      "columnClass": "md:col-span-6"
+    },
+    {
+      "type": "radio",
+      "name": "sesso_assegnato",
+      "label": "Sesso assegnato alla nascita",
+      "required": true,
+      "options": [
+        { "value": "maschio", "label": "Maschio" },
+        { "value": "femmina", "label": "Femmina" },
+        { "value": "altro", "label": "Altro" }
+      ],
+      "validation": {
+        "required": true,
+        "requiredMessage": "Seleziona un'opzione"
+      },
+      "columnClass": "md:col-span-6"
+    },
+    {
+      "type": "text",
+      "name": "nome_elezione",
+      "label": "Nome di elezione (opzionale)",
+      "placeholder": "Come preferisci essere chiamato/a",
+      "columnClass": "md:col-span-6"
+    },
+    {
+      "type": "text",
+      "name": "codice_fiscale",
+      "label": "Codice Fiscale (opzionale)",
+      "placeholder": "RSSMRA80A01H501U",
+      "validation": {
+        "pattern": "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$",
+        "patternMessage": "Formato codice fiscale non valido"
+      },
+      "columnClass": "md:col-span-6"
+    },
+    {
+      "type": "checkbox",
+      "name": "no_codice_fiscale",
+      "label": "Dichiarazione di responsabilità",
+      "options": [
+        { 
+          "value": "true", 
+          "label": "Dichiaro di non essere residente in Italia e di assumermi la responsabilità delle mie dichiarazioni riguardo al non fornire il codice fiscale italiano" 
+        }
+      ],
+      "columnClass": "md:col-span-12"
+    }
+  ],
+  "submitButton": {
+    "text": "Registrati",
+    "variant": "primary",
+    "classes": "w-full"
+  },
+  "validation": {
+    "showErrorsOnSubmit": true,
+    "validateOnBlur": true
+  },
+  "successMessage": "Registrazione completata con successo! Benvenuto nella Tana dei Nerd!",
+  "errorMessage": "Si è verificato un errore durante la registrazione. Riprova più tardi.",
+  "description": "Registrati per accedere alla Tana dei Nerd e partecipare alle nostre attività.",
+  "disclaimer": {
+    "text": "Accetto i termini e condizioni e la privacy policy"
+  },
+  "api": {
+    "url": "/api/registrazione",
+    "method": "POST",
+    "headers": {
+      "X-Requested-With": "XMLHttpRequest"
+    },
+    "timeout": 15000
+  }
+}

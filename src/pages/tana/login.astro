@@ -1,0 +1,43 @@
+---
+import TanaLayout from '~/layouts/TanaLayout.astro';
+import DynamicForm from '~/components/widgets/DynamicForm.astro';
+import SocialLoginButton from '~/components/ui/SocialLoginButton.astro';
+import Separator from '~/components/ui/Separator.astro';
+import AuthLink from '~/components/ui/AuthLink.astro';
+import loginFormConfig from '~/data/forms/login-form.json';
+
+const title = `Login - Victorian Monkey`;
+
+---
+<TanaLayout metadata={{title}}>
+  <section class="flex justify-center items-center w-[100%] min-h-[80vh]">
+    <div class="w-full max-w-md">
+      <DynamicForm
+        title="Accesso alla Tana"
+        subtitle="Accedi al tuo account"
+        formConfig={loginFormConfig as any}
+        id="login-form"
+        classes={{
+          container: "py-8"
+        }}
+      />
+      
+      <!-- Link registrazione -->
+      <AuthLink 
+        href="/tana/registrazione" 
+        text="Non hai ancora un account?"
+      />
+
+      <!-- Separatore -->
+      <Separator />
+
+      <!-- Social Login -->
+      <div class="space-y-3">
+        <SocialLoginButton provider="google" action="login" />
+        <SocialLoginButton provider="facebook" action="login" />
+        <SocialLoginButton provider="github" action="login" />
+        <SocialLoginButton provider="discord" action="login" />
+      </div>
+    </div>
+  </section>
+</TanaLayout>

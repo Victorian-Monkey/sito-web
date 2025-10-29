@@ -1,6 +1,20 @@
 import { getPermalink } from './utils/permalinks';
+import type { CallToAction, Link } from '~/types';
 
-export const headerData = {
+type HeaderData = { links: Link[]; actions: CallToAction[] };
+
+export const headerTanaData: HeaderData = {
+  links: [],
+  actions: [
+    {
+      text: 'Profilo',
+      href: getPermalink('/tana/profilo'),
+      variant: 'primary',
+    },
+  ],
+};
+
+export const headerData: HeaderData = {
   links: [
     {
       text: 'Chi Siamo',
@@ -24,11 +38,11 @@ export const headerData = {
     },
   ],
   actions: [
-    { 
-      text: '👑 Area Socio', 
-      href: getPermalink('/contatti'), 
-      variant: 'primary' 
-    }
+    {
+      text: '👑 Area Socio',
+      href: getPermalink('/tana/login'),
+      variant: 'primary',
+    },
   ],
 };
 
@@ -37,7 +51,11 @@ export const footerData = {
     {
       title: 'Contatti',
       links: [
-        { text: '💬 WhatsApp', href: 'https://wa.me/393513093686?text=Ciao%20Victorian%20Monkey%2C%20vorrei%20chiedere%20', target: '_blank' },
+        {
+          text: '💬 WhatsApp',
+          href: 'https://wa.me/393513093686?text=Ciao%20Victorian%20Monkey%2C%20vorrei%20chiedere%20',
+          target: '_blank',
+        },
         { text: '📞 Contattaci', href: getPermalink('/contatti') },
         { text: '📍 Dove siamo', href: 'https://maps.google.com/?q=Via+dei+Piceni+29,+Roma', target: '_blank' },
       ],
@@ -48,7 +66,11 @@ export const footerData = {
     { text: 'Regolamento', href: getPermalink('/regolamento') },
   ],
   socialLinks: [
-    { ariaLabel: 'WhatsApp', icon: 'tabler:brand-whatsapp', href: 'https://wa.me/393513093686?text=Ciao%20Victorian%20Monkey%2C%20vorrei%20chiedere%20' },
+    {
+      ariaLabel: 'WhatsApp',
+      icon: 'tabler:brand-whatsapp',
+      href: 'https://wa.me/393513093686?text=Ciao%20Victorian%20Monkey%2C%20vorrei%20chiedere%20',
+    },
     { ariaLabel: 'Facebook', icon: 'tabler:brand-facebook', href: 'https://www.facebook.com/victorianmonkey' },
     { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: 'https://www.instagram.com/victorianmonkey' },
   ],

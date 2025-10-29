@@ -1,0 +1,47 @@
+{
+  "fields": [
+    {
+      "type": "email",
+      "name": "email",
+      "label": "Email",
+      "placeholder": "tua.email@esempio.com",
+      "required": true,
+      "validation": {
+        "required": true,
+        "email": true,
+        "emailMessage": "Inserisci un indirizzo email valido"
+      }
+    },
+    {
+      "type": "password",
+      "name": "password",
+      "label": "Password",
+      "placeholder": "La tua password",
+      "required": true,
+      "validation": {
+        "required": true,
+        "requiredMessage": "La password è obbligatoria"
+      }
+    }
+  ],
+  "submitButton": {
+    "text": "Accedi",
+    "variant": "primary",
+    "classes": "w-full"
+  },
+  "validation": {
+    "showErrorsOnSubmit": true,
+    "validateOnBlur": true
+  },
+  "successMessage": "Accesso effettuato con successo!",
+  "errorMessage": "Credenziali non valide. Riprova.",
+  "description": "Accedi al tuo account per accedere alla Tana dei Nerd.",
+  "api": {
+    "url": "/api/login",
+    "method": "POST",
+    "headers": {
+      "X-Requested-With": "XMLHttpRequest"
+    },
+    "timeout": 10000
+  }
+}

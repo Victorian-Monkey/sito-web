@@ -1,0 +1,517 @@
+---
+import Headline from '~/components/ui/Headline.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Button from '~/components/ui/Button.astro';
+import type { DynamicForm as Props } from '~/types';
+
+const {
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline = await Astro.slots.render('tagline'),
+  formConfig,
+  id,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props;
+
+// Parse form configuration
+const config = typeof formConfig === 'string' ? JSON.parse(formConfig) : formConfig;
+const {
+  fields = [],
+  submitButton = { text: 'Invia', variant: 'primary' },
+  successMessage = 'Form inviato con successo!',
+  errorMessage = 'Si è verificato un errore. Riprova.',
+  description = '',
+  disclaimer = null,
+} = config;
+---
+
+<WidgetWrapper id={id} containerClass={`max-w-4xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+  <Headline title={title} subtitle={subtitle} tagline={tagline} />
+
+  <div class="max-w-2xl mx-auto">
+    {description && (
+      <div class="mb-6 text-center">
+        <p class="text-lg text-secondary/80 dark:text-white/80">{description}</p>
+      </div>
+    )}
+
+    <form id="dynamic-form" class="space-y-6" data-config={JSON.stringify(config)}>
+      {fields.map((field, index) => {
+        const fieldId = `field-${field.name || index}`;
+        const isRequired = field.required || field.validation?.required;
+        const fieldClasses = `py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-secondary text-secondary dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-colors ${field.classes || ''}`;
+        
+        return (
+          <div class={`mb-6 ${field.columnClass || ''}`}>
+            {field.label && (
+              <label for={fieldId} class="block text-sm font-medium text-secondary dark:text-white mb-2">
+                {field.label}
+                {isRequired && <span class="text-red-500 ml-1">*</span>}
+              </label>
+            )}
+            
+            {field.type === 'textarea' ? (
+              <textarea
+                id={fieldId}
+                name={field.name}
+                rows={field.rows || 4}
+                placeholder={field.placeholder}
+                required={isRequired}
+                class={fieldClasses}
+                data-validation={field.validation ? JSON.stringify(field.validation) : ''}
+                {...(field.attributes || {})}
+              />
+            ) : field.type === 'select' ? (
+              <select
+                id={fieldId}
+                name={field.name}
+                required={isRequired}
+                class={fieldClasses}
+                data-validation={field.validation ? JSON.stringify(field.validation) : ''}
+                {...(field.attributes || {})}
+              >
+                {field.placeholder && (
+                  <option value="" disabled selected>{field.placeholder}</option>
+                )}
+                {field.options?.map((option) => (
+                  <option value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            ) : field.type === 'radio' || field.type === 'checkbox' ? (
+              <div class="space-y-2">
+                {field.options?.map((option, optionIndex) => (
+                  <div class="flex items-center">
+                    <input
+                      type={field.type}
+                      id={`${fieldId}-${optionIndex}`}
+                      name={field.name}
+                      value={option.value}
+                      required={isRequired && field.type === 'radio'}
+                      class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                      data-validation={field.validation ? JSON.stringify(field.validation) : ''}
+                      {...(field.attributes || {})}
+                    />
+                    <label for={`${fieldId}-${optionIndex}`} class="ml-2 text-sm text-secondary dark:text-white">
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            ) : field.type === 'file' ? (
+              <input
+                type="file"
+                id={fieldId}
+                name={field.name}
+                accept={field.accept}
+                multiple={field.multiple}
+                required={isRequired}
+                class={`${fieldClasses} file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/80`}
+                data-validation={field.validation ? JSON.stringify(field.validation) : ''}
+                {...(field.attributes || {})}
+              />
+            ) : field.type === 'date' || field.type === 'datetime-local' ? (
+              <input
+                type={field.type}
+                id={fieldId}
+                name={field.name}
+                placeholder={field.placeholder}
+                required={isRequired}
+                class={fieldClasses}
+                min={field.min}
+                max={field.max}
+                data-validation={field.validation ? JSON.stringify(field.validation) : ''}
+                {...(field.attributes || {})}
+              />
+            ) : (
+              <input
+                type={field.type || 'text'}
+                id={fieldId}
+                name={field.name}
+                placeholder={field.placeholder}
+                required={isRequired}
+                class={fieldClasses}
+                min={field.min}
+                max={field.max}
+                step={field.step}
+                pattern={field.pattern}
+                autocomplete={field.autocomplete}
+                data-validation={field.validation ? JSON.stringify(field.validation) : ''}
+                {...(field.attributes || {})}
+              />
+            )}
+            
+            {field.helpText && (
+              <p class="mt-1 text-sm text-secondary/60 dark:text-white/60">{field.helpText}</p>
+            )}
+            
+            <div class="field-error hidden mt-1 text-sm text-red-500" data-field={field.name}></div>
+          </div>
+        );
+      })}
+
+      {disclaimer && (
+        <div class="mt-6 flex items-start">
+          <div class="flex mt-0.5">
+            <input
+              id="disclaimer"
+              name="disclaimer"
+              type="checkbox"
+              required
+              class="cursor-pointer mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+            />
+          </div>
+          <div class="ml-3">
+            <label for="disclaimer" class="cursor-pointer select-none text-sm text-secondary/80 dark:text-white/80">
+              {disclaimer.text}
+            </label>
+          </div>
+        </div>
+      )}
+
+      <div class="mt-8">
+        <Button 
+          variant={submitButton.variant || 'primary'} 
+          type="submit" 
+          class={`w-full ${submitButton.classes || ''}`}
+        >
+          {submitButton.text}
+        </Button>
+      </div>
+
+      <div class="form-messages mt-4 text-center">
+        <div class="success-message hidden text-green-600 dark:text-green-400 text-sm">
+          {successMessage}
+        </div>
+        <div class="error-message hidden text-red-600 dark:text-red-400 text-sm">
+          {errorMessage}
+        </div>
+      </div>
+    </form>
+  </div>
+</WidgetWrapper>
+
+<script>
+  import { isValidPhoneNumber } from 'libphonenumber-js';
+
+  class DynamicFormValidator {
+    private form: HTMLFormElement;
+    private config: Record<string, unknown>;
+
+    constructor(formElement: HTMLFormElement) {
+      this.form = formElement;
+      this.config = JSON.parse(formElement.dataset.config || '{}');
+      this.init();
+    }
+
+    init() {
+      this.form.addEventListener('submit', this.handleSubmit.bind(this));
+      this.setupFieldValidation();
+    }
+
+    setupFieldValidation() {
+      const fields = this.form.querySelectorAll('input, textarea, select');
+      
+      fields.forEach(field => {
+        // Real-time validation
+        field.addEventListener('blur', () => this.validateField(field as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement));
+        field.addEventListener('input', () => this.clearFieldError(field as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement));
+        
+        // Cross-field validation for codice fiscale
+        const fieldElement = field as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+        if (fieldElement.name === 'codice_fiscale' || fieldElement.name === 'no_codice_fiscale') {
+          field.addEventListener('change', () => this.validateCodiceFiscaleCrossField());
+        }
+      });
+    }
+
+    validateCodiceFiscaleCrossField() {
+      const codiceFiscaleField = this.form.querySelector('input[name="codice_fiscale"]') as HTMLInputElement;
+      const noCodiceFiscaleCheckbox = this.form.querySelector('input[name="no_codice_fiscale"]') as HTMLInputElement;
+      
+      if (codiceFiscaleField && noCodiceFiscaleCheckbox) {
+        const hasCodiceFiscale = codiceFiscaleField.value.trim();
+        const isChecked = noCodiceFiscaleCheckbox.checked;
+        
+        if (hasCodiceFiscale && isChecked) {
+          // Clear checkbox if codice fiscale is provided
+          noCodiceFiscaleCheckbox.checked = false;
+          this.clearFieldError(noCodiceFiscaleCheckbox);
+        } else if (!hasCodiceFiscale && !isChecked) {
+          // Show error if neither is provided
+          this.showFieldError(noCodiceFiscaleCheckbox, 'Devi fornire il codice fiscale o dichiarare di non essere residente in Italia');
+        } else {
+          // Clear errors if one of them is provided
+          this.clearFieldError(noCodiceFiscaleCheckbox);
+        }
+      }
+    }
+
+    validateField(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) {
+      const validation = this.getFieldValidation(field);
+      if (!validation) return true;
+
+      const value = field.value.trim();
+      const fieldName = field.name;
+      let isValid = true;
+      let errorMessage = '';
+
+      // Required validation
+      if (validation.required && !value) {
+        isValid = false;
+        errorMessage = validation.requiredMessage || `${fieldName} è obbligatorio`;
+      }
+
+      // Email validation (only if field has content)
+      if (isValid && validation.email && value && value.trim()) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          isValid = false;
+          errorMessage = validation.emailMessage || 'Inserisci un indirizzo email valido';
+        }
+      }
+
+      // Phone validation (only if field has content)
+      if (isValid && validation.phone && value && value.trim()) {
+        try {
+          if (!isValidPhoneNumber(value)) {
+            isValid = false;
+            errorMessage = validation.phoneMessage || 'Inserisci un numero di telefono valido';
+          }
+        } catch {
+          isValid = false;
+          errorMessage = validation.phoneMessage || 'Inserisci un numero di telefono valido';
+        }
+      }
+
+      // Min length validation (only if field has content)
+      if (isValid && validation.minLength && value && value.length < validation.minLength) {
+        isValid = false;
+        errorMessage = validation.minLengthMessage || `Minimo ${validation.minLength} caratteri`;
+      }
+
+      // Max length validation (only if field has content)
+      if (isValid && validation.maxLength && value && value.length > validation.maxLength) {
+        isValid = false;
+        errorMessage = validation.maxLengthMessage || `Massimo ${validation.maxLength} caratteri`;
+      }
+
+      // Pattern validation (only if field has content)
+      if (isValid && validation.pattern && value && value.trim()) {
+        const regex = new RegExp(validation.pattern);
+        if (!regex.test(value)) {
+          isValid = false;
+          errorMessage = validation.patternMessage || 'Formato non valido';
+        }
+      }
+
+      // Custom validation (only if field has content)
+      if (isValid && validation.custom && typeof validation.custom === 'function' && value && value.trim()) {
+        const customResult = validation.custom(value);
+        if (customResult !== true) {
+          isValid = false;
+          errorMessage = customResult || 'Valore non valido';
+        }
+      }
+
+      // Codice fiscale validation (only if field has content)
+      if (isValid && field.name === 'codice_fiscale' && value && value.trim()) {
+        const cfRegex = /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/;
+        if (!cfRegex.test(value.toUpperCase())) {
+          isValid = false;
+          errorMessage = 'Formato codice fiscale non valido';
+        }
+      }
+
+
+      if (!isValid) {
+        this.showFieldError(field, errorMessage);
+      } else {
+        this.clearFieldError(field);
+      }
+
+      return isValid;
+    }
+
+    getFieldValidation(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) {
+      const validationData = field.dataset.validation;
+      return validationData ? JSON.parse(validationData) : null;
+    }
+
+    showFieldError(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement, message: string) {
+      const errorElement = this.form.querySelector(`[data-field="${field.name}"]`);
+      if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('hidden');
+      }
+      field.classList.add('border-red-500');
+    }
+
+    clearFieldError(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) {
+      const errorElement = this.form.querySelector(`[data-field="${field.name}"]`);
+      if (errorElement) {
+        errorElement.classList.add('hidden');
+      }
+      field.classList.remove('border-red-500');
+    }
+
+    validateForm() {
+      const fields = this.form.querySelectorAll('input, textarea, select');
+      let isFormValid = true;
+
+      fields.forEach(field => {
+        if (!this.validateField(field as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement)) {
+          isFormValid = false;
+        }
+      });
+
+      // Additional cross-field validation for codice fiscale
+      const codiceFiscaleField = this.form.querySelector('input[name="codice_fiscale"]') as HTMLInputElement;
+      const noCodiceFiscaleCheckbox = this.form.querySelector('input[name="no_codice_fiscale"]') as HTMLInputElement;
+      
+      if (codiceFiscaleField && noCodiceFiscaleCheckbox) {
+        const hasCodiceFiscale = codiceFiscaleField.value.trim();
+        const isChecked = noCodiceFiscaleCheckbox.checked;
+        
+        if (!hasCodiceFiscale && !isChecked) {
+          this.showFieldError(noCodiceFiscaleCheckbox, 'Devi fornire il codice fiscale o dichiarare di non essere residente in Italia');
+          isFormValid = false;
+        }
+      }
+
+      return isFormValid;
+    }
+
+    async handleSubmit(e) {
+      e.preventDefault();
+      
+      if (!this.validateForm()) {
+        this.showMessage('error', 'Per favore correggi gli errori nel form');
+        return;
+      }
+
+      try {
+        this.showLoading(true);
+        
+        const formData = new FormData(this.form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Handle file uploads
+        const fileInputs = this.form.querySelectorAll('input[type="file"]');
+        fileInputs.forEach(input => {
+          const fileInput = input as HTMLInputElement;
+          if (fileInput.files && fileInput.files.length > 0) {
+            data[fileInput.name] = Array.from(fileInput.files) as unknown as FormDataEntryValue;
+          }
+        });
+
+        // Submit to API endpoint if configured
+        const apiConfig = (this.config.api as { url: string; method?: string; headers?: Record<string, string>; timeout?: number }) || ((this.config.apiEndpoint as string) ? { url: this.config.apiEndpoint, method: 'POST' } : null);
+        
+        if (apiConfig) {
+          const requestOptions: RequestInit = {
+            method: apiConfig.method || 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...apiConfig.headers,
+            },
+            body: JSON.stringify(data),
+          };
+
+          // Add timeout if specified
+          if (apiConfig.timeout) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), apiConfig.timeout);
+            requestOptions.signal = controller.signal;
+            
+            try {
+              const response = await fetch(apiConfig.url, requestOptions);
+              clearTimeout(timeoutId);
+              
+              if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+              }
+            } catch (error) {
+              clearTimeout(timeoutId);
+              if (error.name === 'AbortError') {
+                throw new Error('Timeout: La richiesta ha impiegato troppo tempo');
+              }
+              throw error;
+            }
+          } else {
+            const response = await fetch(apiConfig.url, requestOptions);
+            
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+          }
+        }
+
+        this.showMessage('success', (this.config.successMessage as string) || 'Form inviato con successo!');
+        this.form.reset();
+        
+        // Call success callback if configured
+        if (this.config.onSuccess && typeof this.config.onSuccess === 'function') {
+          (this.config.onSuccess as (data: Record<string, unknown>) => void)(data);
+        }
+
+      } catch (error) {
+        console.error('Form submission error:', error);
+        this.showMessage('error', (this.config.errorMessage as string) || 'Si è verificato un errore. Riprova.');
+        
+        // Call error callback if configured
+        if (this.config.onError && typeof this.config.onError === 'function') {
+          (this.config.onError as (error: Error) => void)(error as Error);
+        }
+      } finally {
+        this.showLoading(false);
+      }
+    }
+
+    showMessage(type: 'success' | 'error', message: string) {
+      const successMsg = this.form.querySelector('.success-message') as HTMLElement | null;
+      const errorMsg = this.form.querySelector('.error-message') as HTMLElement | null;
+      
+      if (type === 'success') {
+        if (successMsg) {
+          successMsg.textContent = message;
+          successMsg.classList.remove('hidden');
+        }
+        if (errorMsg) {
+          errorMsg.classList.add('hidden');
+        }
+      } else {
+        if (errorMsg) {
+          errorMsg.textContent = message;
+          errorMsg.classList.remove('hidden');
+        }
+        if (successMsg) {
+          successMsg.classList.add('hidden');
+        }
+      }
+    }
+
+    showLoading(show: boolean) {
+      const submitButton = this.form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (submitButton) {
+        if (show) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Invio in corso...';
+        } else {
+          submitButton.disabled = false;
+          submitButton.textContent = (this.config.submitButton as { text?: string })?.text || 'Invia';
+        }
+      }
+    }
+  }
+
+  // Initialize form when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('dynamic-form') as HTMLFormElement | null;
+    if (form) {
+      new DynamicFormValidator(form);
+    }
+  });
+</script>

@@ -1,0 +1,78 @@
+{
+  "fields": [
+    {
+      "type": "text",
+      "name": "name",
+      "label": "Nome",
+      "placeholder": "Il tuo nome",
+      "required": true,
+      "validation": {
+        "required": true,
+        "requiredMessage": "Il nome è obbligatorio",
+        "minLength": 2,
+        "minLengthMessage": "Il nome deve essere di almeno 2 caratteri"
+      }
+    },
+    {
+      "type": "email",
+      "name": "email",
+      "label": "Email",
+      "placeholder": "tua.email@esempio.com",
+      "required": true,
+      "validation": {
+        "required": true,
+        "email": true,
+        "emailMessage": "Inserisci un indirizzo email valido"
+      }
+    },
+    {
+      "type": "tel",
+      "name": "phone",
+      "label": "Telefono",
+      "placeholder": "351 309 3686",
+      "required": true,
+      "validation": {
+        "required": true,
+        "phone": true,
+        "phoneMessage": "Inserisci un numero di telefono valido"
+      }
+    },
+    {
+      "type": "textarea",
+      "name": "message",
+      "label": "Messaggio",
+      "placeholder": "Scrivi qui il tuo messaggio...",
+      "rows": 4,
+      "required": true,
+      "validation": {
+        "required": true,
+        "requiredMessage": "Il messaggio è obbligatorio",
+        "minLength": 10,
+        "minLengthMessage": "Il messaggio deve essere di almeno 10 caratteri"
+      }
+    }
+  ],
+  "submitButton": {
+    "text": "Invia Messaggio",
+    "variant": "primary",
+    "classes": "w-full"
+  },
+  "validation": {
+    "showErrorsOnSubmit": true,
+    "validateOnBlur": true
+  },
+  "successMessage": "Grazie! Il tuo messaggio è stato inviato con successo. Ti ricontatteremo presto.",
+  "errorMessage": "Si è verificato un errore durante l'invio. Riprova più tardi.",
+  "description": "Compila il form qui sotto per contattarci. Ti risponderemo il prima possibile!",
+  "disclaimer": {
+    "text": "Accetto il trattamento dei dati personali secondo la privacy policy"
+  },
+  "api": {
+    "url": "/api/contatti",
+    "method": "POST",
+    "headers": {
+      "X-Requested-With": "XMLHttpRequest"
+    },
+    "timeout": 10000
+  }
+}

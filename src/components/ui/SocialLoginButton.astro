@@ -1,0 +1,119 @@
+---
+import { Icon } from 'astro-icon/components';
+
+export interface Props {
+  provider: 'google' | 'facebook' | 'twitter' | 'github' | 'discord' | 'apple';
+  action: 'login' | 'register';
+  classes?: string;
+}
+
+const { provider, action, classes = '' } = Astro.props;
+
+const providers = {
+  google: {
+    name: 'Google',
+    icon: 'tabler:brand-google',
+    bgColor: 'bg-white dark:bg-secondary',
+    textColor: 'text-gray-700 dark:text-gray-300',
+    borderColor: 'border-gray-300 dark:border-gray-600',
+    hoverColor: 'hover:bg-gray-50 dark:hover:bg-gray-700'
+  },
+  facebook: {
+    name: 'Facebook',
+    icon: 'tabler:brand-facebook',
+    bgColor: 'bg-[#1877F2]',
+    textColor: 'text-white',
+    borderColor: 'border-[#1877F2]',
+    hoverColor: 'hover:bg-[#166FE5]'
+  },
+  twitter: {
+    name: 'Twitter',
+    icon: 'tabler:brand-twitter',
+    bgColor: 'bg-[#1DA1F2]',
+    textColor: 'text-white',
+    borderColor: 'border-[#1DA1F2]',
+    hoverColor: 'hover:bg-[#1A91DA]'
+  },
+  github: {
+    name: 'GitHub',
+    icon: 'tabler:brand-github',
+    bgColor: 'bg-gray-900 dark:bg-gray-800',
+    textColor: 'text-white',
+    borderColor: 'border-gray-900 dark:border-gray-800',
+    hoverColor: 'hover:bg-gray-800 dark:hover:bg-gray-700'
+  },
+  discord: {
+    name: 'Discord',
+    icon: 'tabler:brand-discord',
+    bgColor: 'bg-[#5865F2]',
+    textColor: 'text-white',
+    borderColor: 'border-[#5865F2]',
+    hoverColor: 'hover:bg-[#4752C4]'
+  },
+  apple: {
+    name: 'Apple',
+    icon: 'tabler:brand-apple',
+    bgColor: 'bg-black dark:bg-gray-900',
+    textColor: 'text-white',
+    borderColor: 'border-black dark:border-gray-900',
+    hoverColor: 'hover:bg-gray-900 dark:hover:bg-gray-800'
+  }
+};
+
+const config = providers[provider];
+const buttonText = action === 'login' ? `Continua con ${config.name}` : `Registrati con ${config.name}`;
+---
+
+<button 
+  type="button"
+  class={`w-full flex items-center justify-center px-4 py-3 border rounded-lg shadow-sm transition-colors ${config.bgColor} ${config.textColor} ${config.borderColor} ${config.hoverColor} ${classes}`}
+  data-provider={provider}
+  data-action={action}
+>
+  <Icon 
+    name={config.icon} 
+    class="w-5 h-5 mr-3" 
+  />
+  {buttonText}
+</button>
+
+<script>
+  // Handle social login clicks
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('button[data-provider]');
+    
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const provider = button.getAttribute('data-provider');
+        const action = button.getAttribute('data-action');
+        
+        console.log(`${action} with ${provider} clicked`);
+        
+        // TODO: Implement OAuth for each provider
+        switch (provider) {
+          case 'google':
+            // Google OAuth implementation
+            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con Google - Funzionalità in arrivo!`);
+            break;
+          case 'facebook':
+            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con Facebook - Funzionalità in arrivo!`);
+            break;
+          case 'twitter':
+            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con Twitter - Funzionalità in arrivo!`);
+            break;
+          case 'github':
+            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con GitHub - Funzionalità in arrivo!`);
+            break;
+          case 'discord':
+            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con Discord - Funzionalità in arrivo!`);
+            break;
+          case 'apple':
+            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con Apple - Funzionalità in arrivo!`);
+            break;
+          default:
+            console.log(`Provider ${provider} not implemented`);
+        }
+      });
+    });
+  });
+</script>

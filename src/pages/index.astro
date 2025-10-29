@@ -109,7 +109,7 @@ const metadata = {
         {activeAnnouncements.length > 0 ? (
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {activeAnnouncements.slice(0, 3).map((annuncio) => (
-              <Card className="mb-4 bg-white dark:bg-secondary">
+              <Card className="mb-4 bg-white dark:bg-secondary border-accent border-[1px]">
                 <div class="flex items-center justify-between mb-3">
                   <CategoryBadge color={annunciData.categories.find(c => c.id === annuncio.category)?.color || 'gray'}>
                     {annunciData.categories.find(c => c.id === annuncio.category)?.name}

@@ -1,6 +1,15 @@
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import type { HTMLAttributes, ImageMetadata } from 'astro/types';
 
+
+
+export interface Link {
+  text?: string;
+  href?: string;
+  ariaLabel?: string;
+  icon?: string;
+}
+
 export interface Post {
   /** A unique ID number that identifies a post. */
   id: string;
@@ -280,3 +289,84 @@ export interface Content extends Omit<Headline, 'classes'>, Widget {
 }
 
 export interface Contact extends Omit<Headline, 'classes'>, Form, Widget {}
+
+// Dynamic Form Types
+export interface FormField {
+  type?: 'text' | 'email' | 'tel' | 'password' | 'number' | 'date' | 'datetime-local' | 'time' | 'url' | 'search' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'file' | 'hidden';
+  name: string;
+  label?: string;
+  placeholder?: string;
+  required?: boolean;
+  helpText?: string;
+  classes?: string;
+  columnClass?: string;
+  rows?: number;
+  min?: string | number;
+  max?: string | number;
+  step?: number;
+  pattern?: string;
+  accept?: string;
+  multiple?: boolean;
+  autocomplete?: string;
+  options?: Array<{
+    value: string;
+    label: string;
+  }>;
+  validation?: {
+    required?: boolean;
+    requiredMessage?: string;
+    email?: boolean;
+    emailMessage?: string;
+    phone?: boolean;
+    phoneMessage?: string;
+    minLength?: number;
+    minLengthMessage?: string;
+    maxLength?: number;
+    maxLengthMessage?: string;
+    pattern?: string;
+    patternMessage?: string;
+    custom?: (value: string) => boolean | string;
+  };
+  attributes?: Record<string, any>;
+}
+
+export interface FormConfig {
+  fields: FormField[];
+  submitButton?: {
+    text?: string;
+    variant?: 'primary' | 'secondary' | 'tertiary' | 'link';
+    classes?: string;
+  };
+  validation?: {
+    showErrorsOnSubmit?: boolean;
+    validateOnBlur?: boolean;
+  };
+  successMessage?: string;
+  errorMessage?: string;
+  description?: string;
+  disclaimer?: {
+    text: string;
+  };
+  // API Configuration
+  api?: {
+    url: string;
+    method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    headers?: Record<string, string>;
+    timeout?: number;
+  };
+  // Legacy support
+  apiEndpoint?: string;
+  onSuccess?: (data: Record<string, any>) => void;
+  onError?: (error: Error) => void;
+}
+
+export interface DynamicForm extends Omit<Headline, 'classes'>, Widget {
+  formConfig: FormConfig | string;
+}
+
+// Global window interface for custom validation functions
+declare global {
+  interface Window {
+    validatePasswordMatch?: (value: string) => boolean | string;
+  }
+}
