@@ -19,7 +19,7 @@
 
 <br>
 
-![Victorian Monkey Website Screenshot](https://raw.githubusercontent.com/arthelokyo/.github/main/resources/astrowind/screenshot-astrowind-1.0.png)
+![Victorian Monkey Website Screenshot](./public/images/victorian-monkey-screenshot.png)
 
 [![Victorian Monkey](https://img.shields.io/badge/made%20by%20-Victorian%20Monkey-556bf2?style=flat-square&logo=monkey&logoColor=white&labelColor=101827)](https://github.com/victorian-monkey)
 [![Vicedomini Softworks](https://img.shields.io/badge/developed%20by%20-Vicedomini%20Softworks-FF6B35?style=flat-square&logo=code&logoColor=white&labelColor=000000)](https://vicedomini.ltd)
@@ -149,31 +149,27 @@ Il progetto Victorian Monkey è organizzato come segue:
 └── ...
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Astro cerca file `.astro` o `.md` nella directory `src/pages/`. Ogni pagina viene esposta come route basata sul nome del file.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+La directory `src/components/` contiene tutti i componenti Astro/React/Vue/Svelte/Preact riutilizzabili.
 
-Any static assets, like images, can be placed in the `public/` directory if they do not require any transformation or in the `assets/` directory if they are imported directly.
-
-[![Edit AstroWind on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://githubbox.com/arthelokyo/astrowind/tree/main) [![Open in Gitpod](https://svgshare.com/i/xdi.svg)](https://gitpod.io/?on=gitpod#https://github.com/arthelokyo/astrowind) [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/arthelokyo/astrowind)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file `README.md`. Update `src/config.yaml` and contents. Have fun!
+Le risorse statiche, come le immagini, possono essere posizionate nella directory `public/` se non richiedono trasformazioni, o nella directory `assets/` se vengono importate direttamente.
 
 <br>
 
 ### Commands
 
-All commands are run from the root of the project, from a terminal:
+Tutti i comandi vengono eseguiti dalla root del progetto:
 
-| Command             | Action                                             |
+| Comando             | Azione                                             |
 | :------------------ | :------------------------------------------------- |
-| `npm install`       | Installs dependencies                              |
-| `npm run dev`       | Starts local dev server at `localhost:4321`        |
-| `npm run build`     | Build your production site to `./dist/`            |
-| `npm run preview`   | Preview your build locally, before deploying       |
-| `npm run check`     | Check your project for errors                      |
-| `npm run fix`       | Run Eslint and format codes with Prettier          |
-| `npm run astro ...` | Run CLI commands like `astro add`, `astro preview` |
+| `npm install`       | Installa le dipendenze                             |
+| `npm run dev`       | Avvia il server di sviluppo su `localhost:4321`    |
+| `npm run build`     | Compila il sito per la produzione in `./dist/`     |
+| `npm run preview`   | Anteprima del build localmente, prima del deploy   |
+| `npm run check`     | Controlla il progetto per errori                   |
+| `npm run fix`       | Esegue Eslint e formatta il codice con Prettier    |
+| `npm run astro ...` | Esegue comandi CLI come `astro add`, `astro preview` |
 
 <br>
 
@@ -209,113 +205,115 @@ File di configurazione principale: `./src/config.yaml`
 
 ```yaml
 site:
-  name: 'Example'
-  site: 'https://example.com'
-  base: '/' # Change this if you need to deploy to Github Pages, for example
-  trailingSlash: false # Generate permalinks with or without "/" at the end
+  name: 'Victorian Monkey'
+  site: 'https://victorian-monkey.vercel.app'
+  base: '/'
+  trailingSlash: false
 
-  googleSiteVerificationId: false # Or some value,
+  googleSiteVerificationId: false
 
 # Default SEO metadata
 metadata:
   title:
-    default: 'Example'
-    template: '%s — Example'
-  description: 'This is the default meta description of Example website'
+    default: 'Victorian Monkey - La Tana dei Nerd'
+    template: '%s — Victorian Monkey'
+  description: 'Il sito web ufficiale del Victorian Monkey - La Tana dei Nerd. Community per appassionati di tecnologia, gaming e cultura nerd.'
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: 'Example'
+    site_name: 'Victorian Monkey'
     images:
-      - url: '~/assets/images/default.png'
+      - url: '~/assets/images/victorian-monkey-og.png'
         width: 1200
         height: 628
     type: website
   twitter:
-    handle: '@twitter_user'
-    site: '@twitter_user'
+    handle: '@victorianmonkey'
+    site: '@victorianmonkey'
     cardType: summary_large_image
 
 i18n:
-  language: en
+  language: it
   textDirection: ltr
 
 apps:
   blog:
-    isEnabled: true # If the blog will be enabled
-    postsPerPage: 6 # Number of posts per page
+    isEnabled: true
+    postsPerPage: 6
 
     post:
       isEnabled: true
-      permalink: '/blog/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      permalink: '/blog/%slug%'
       robots:
         index: true
 
     list:
       isEnabled: true
-      pathname: 'blog' # Blog main path, you can change this to "articles" (/articles)
+      pathname: 'blog'
       robots:
         index: true
 
     category:
       isEnabled: true
-      pathname: 'category' # Category main path /category/some-category, you can change this to "group" (/group/some-category)
+      pathname: 'category'
       robots:
         index: true
 
     tag:
       isEnabled: true
-      pathname: 'tag' # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
+      pathname: 'tag'
       robots:
         index: false
 
-    isRelatedPostsEnabled: true # If a widget with related posts is to be displayed below each post
-    relatedPostsCount: 4 # Number of related posts to display
+    isRelatedPostsEnabled: true
+    relatedPostsCount: 4
 
 analytics:
   vendors:
     googleAnalytics:
-      id: null # or "G-XXXXXXXXXX"
+      id: null
 
 ui:
-  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
+  theme: 'system'
 ```
 
 <br>
 
-#### Customize Design
+#### Personalizzazione Design
 
-To customize Font families, Colors or more Elements refer to the following files:
+Per personalizzare font, colori o altri elementi, modifica i seguenti file:
 
 - `src/components/CustomStyles.astro`
 - `src/assets/styles/tailwind.css`
 
 ### Deploy
 
-#### Deploy to production (manual)
+#### Deploy in produzione (manuale)
 
-You can create an optimized production build with:
+Puoi creare un build ottimizzato per la produzione con:
 
 ```shell
 npm run build
 ```
 
-Now, your website is ready to be deployed. All generated files are located at
-`dist` folder, which you can deploy the folder to any hosting service you
-prefer.
+Ora il tuo sito web è pronto per essere deployato. Tutti i file generati si trovano nella cartella `dist`, che puoi deployare su qualsiasi servizio di hosting preferisci.
 
-#### Deploy to Netlify
+#### Deploy su Vercel
 
-Clone this repository on your own GitHub account and deploy it to Netlify:
+Il sito è attualmente deployato su Vercel. Per aggiornamenti:
 
-[![Netlify Deploy button](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/arthelokyo/astrowind)
+1. Push delle modifiche su GitHub
+2. Vercel eseguirà automaticamente il build e il deploy
+3. Il sito sarà disponibile su `https://victorian-monkey.vercel.app`
 
-#### Deploy to Vercel
+#### Deploy su altri servizi
 
-Clone this repository on your own GitHub account and deploy to Vercel:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Farthelokyo%2Fastrowind)
+Il progetto può essere deployato su:
+- **Netlify**: Compatibile con build statici
+- **Firebase Hosting**: Integrazione nativa con Firebase
+- **GitHub Pages**: Per hosting gratuito
+- **Altri provider**: Qualsiasi servizio che supporti siti statici
 
 <br>
 
