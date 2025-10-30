@@ -87,32 +87,46 @@ const buttonText = action === 'login' ? `Continua con ${config.name}` : `Registr
         const provider = button.getAttribute('data-provider');
         const action = button.getAttribute('data-action');
         
-        console.log(`${action} with ${provider} clicked`);
-        
-        // TODO: Implement OAuth for each provider
-        switch (provider) {
-          case 'google':
-            // Google OAuth implementation
-            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con Google - Funzionalità in arrivo!`);
-            break;
-          case 'facebook':
-            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con Facebook - Funzionalità in arrivo!`);
-            break;
-          case 'twitter':
-            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con Twitter - Funzionalità in arrivo!`);
-            break;
-          case 'github':
-            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con GitHub - Funzionalità in arrivo!`);
-            break;
-          case 'discord':
-            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con Discord - Funzionalità in arrivo!`);
-            break;
-          case 'apple':
-            alert(`${action === 'login' ? 'Login' : 'Registrazione'} con Apple - Funzionalità in arrivo!`);
-            break;
-          default:
-            console.log(`Provider ${provider} not implemented`);
-        }
+        import('firebase/auth').then(async ({ GoogleAuthProvider, GithubAuthProvider, signInWithPopup }) => {
+          const { getFirebaseAuth } = await import('~/config/firebase');
+          const auth = getFirebaseAuth();
+
+          const goHome = () => window.location.assign('/');
+
+          const handleResult = async (user) => {
+            if (user) {
+              const idToken = await user.getIdToken();
+              await fetch('/api/profile', { headers: { Authorization: `Bearer ${idToken}` } });
+            }
+            goHome();
+          };
+
+          try {
+            switch (provider) {
+              case 'google': {
+                const prov = new GoogleAuthProvider();
+                const res = await signInWithPopup(auth, prov);
+                await handleResult(res.user);
+                break;
+              }
+              case 'github': {
+                const prov = new GithubAuthProvider();
+                const res = await signInWithPopup(auth, prov);
+                await handleResult(res.user);
+                break;
+              }
+              case 'facebook':
+              case 'twitter':
+              case 'discord':
+              case 'apple':
+              default:
+                alert('Questo provider non è ancora configurato.');
+            }
+          } catch (e) {
+            console.error('Errore login social', e);
+            alert('Accesso non riuscito. Riprova.');
+          }
+        });
       });
     });
   });

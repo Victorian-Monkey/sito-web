@@ -1,0 +1,54 @@
+---
+import TanaLayout from '~/layouts/TanaLayout.astro';
+const title = `Accesso in corso - Victorian Monkey`;
+---
+<TanaLayout metadata={{ title }}>
+  <section class="flex justify-center items-center w-[100%] min-h-[60vh]">
+    <div class="w-full max-w-md text-center space-y-4">
+      <h1 class="text-2xl font-semibold">Stiamo completando l'accesso...</h1>
+      <p class="text-secondary/80 dark:text-white/80">Attendi qualche istante.</p>
+    </div>
+  </section>
+</TanaLayout>
+
+<script>
+  import { isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged } from 'firebase/auth';
+  import { getFirebaseAuth } from '~/config/firebase';
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const auth = getFirebaseAuth();
+
+    if (!isSignInWithEmailLink(auth, window.location.href)) {
+      window.location.replace('/tana/login');
+      return;
+    }
+
+    let email = window.localStorage.getItem('vm_auth_email');
+    if (!email) {
+      email = window.prompt('Inserisci la tua email per completare l’accesso') || '';
+    }
+
+    try {
+      const result = await signInWithEmailLink(auth, email, window.location.href);
+      window.localStorage.removeItem('vm_auth_email');
+      if (result.user) {
+        const idToken = await result.user.getIdToken();
+        await fetch('/api/profile', { headers: { Authorization: `Bearer ${idToken}` } });
+      }
+      window.location.replace('/');
+    } catch (err) {
+      console.error('Completamento accesso fallito', err);
+      alert('Link non valido o scaduto. Richiedi un nuovo link di accesso.');
+      window.location.replace('/tana/login');
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const idToken = await user.getIdToken();
+        await fetch('/api/profile', { headers: { Authorization: `Bearer ${idToken}` } });
+      }
+    });
+  });
+</script>
+
+

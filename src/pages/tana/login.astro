@@ -41,3 +41,42 @@ const title = `Login - Victorian Monkey`;
     </div>
   </section>
 </TanaLayout>
+
+<script>
+  import { getFirebaseAuth } from '~/config/firebase';
+  import { sendSignInLinkToEmail, isSignInWithEmailLink } from 'firebase/auth';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('dynamic-form') as HTMLFormElement | null;
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement | null;
+      const email = emailInput?.value?.trim();
+      if (!email) {
+        alert('Inserisci una email valida');
+        return;
+      }
+
+      const auth = getFirebaseAuth();
+      const actionCodeSettings = {
+        url: `${window.location.origin}/auth/complete`,
+        handleCodeInApp: true,
+      } as const;
+
+      try {
+        await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+        window.localStorage.setItem('vm_auth_email', email);
+        alert('Ti abbiamo inviato un link di accesso via email. Controlla la posta.');
+      } catch (err) {
+        console.error('Errore invio link', err);
+        alert('Non siamo riusciti a inviare il link. Riprova.');
+      }
+    });
+
+    if (isSignInWithEmailLink(getFirebaseAuth(), window.location.href)) {
+      window.location.replace('/auth/complete');
+    }
+  });
+</script>

@@ -1,0 +1,61 @@
+name: Deploy to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main
+#  pull_request:
+#    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  deploy:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+
+      - name: Install Firebase CLI
+        run: npm i -g firebase-tools
+
+      - name: Enable Firebase Web Frameworks (Astro SSR)
+        run: firebase experiments:enable webframeworks
+
+      - name: Set build environment
+        run: |
+          echo "PUBLIC_FIREBASE_API_KEY=${{ secrets.PUBLIC_FIREBASE_API_KEY }}" >> $GITHUB_ENV
+          echo "PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> $GITHUB_ENV
+          echo "PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.PUBLIC_FIREBASE_PROJECT_ID }}" >> $GITHUB_ENV
+          echo "PUBLIC_FIREBASE_APP_ID=${{ secrets.PUBLIC_FIREBASE_APP_ID }}" >> $GITHUB_ENV
+          echo "PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.PUBLIC_FIREBASE_STORAGE_BUCKET }}" >> $GITHUB_ENV
+          echo "PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}" >> $GITHUB_ENV
+          echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> $GITHUB_ENV
+
+      - name: Preview deploy (on PR)
+        if: github.event_name == 'pull_request' && github.event.action != 'closed'
+        run: |
+          firebase deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT_ID }} --non-interactive --message "PR #${{ github.event.pull_request.number }}"
+
+      - name: Production deploy (on main)
+        if: github.event_name == 'push'
+        run: |
+          firebase deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT_ID }} --non-interactive --message "${{ github.sha }}"
+
+
