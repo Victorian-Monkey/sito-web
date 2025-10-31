@@ -33,7 +33,9 @@ jobs:
           credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
 
       - name: Install Firebase CLI
-        run: npm i -g firebase-tools
+        run: |
+          npm i -g firebase-tools
+          sed -i "s|__REPLACE_WITH_PROJECT_ID__|${{ secrets.FIREBASE_PROJECT_ID }}|g" .firebaserc
 
       - name: Enable Firebase Web Frameworks (Astro SSR)
         run: firebase experiments:enable webframeworks
