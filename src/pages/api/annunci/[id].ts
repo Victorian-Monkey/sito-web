@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import annunciData from '../../data/annunci.json';
+import annunciData from '~/data/annunci.json';
 
 export const GET: APIRoute = async ({ params }) => {
   const { id } = params;
