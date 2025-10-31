@@ -24,3 +24,4 @@ pnpm-lock.yaml
 .astro
 
 .idea
+.firebase

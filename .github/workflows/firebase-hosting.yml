@@ -1,9 +1,10 @@
 name: Deploy to Firebase Hosting
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: 
+  # push:
+  #   branches:
+  #     - main
 #  pull_request:
 #    types: [opened, synchronize, reopened, closed]
 
