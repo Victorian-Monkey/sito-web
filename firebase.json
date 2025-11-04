@@ -9,5 +9,16 @@
     "frameworksBackend": {
       "region": "europe-west1"
     }
+  },
+  "apphosting": {
+    "backendId": "sito-monkey-webapp",
+    "rootDir": "/",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "functions"
+    ]
   }
 }
