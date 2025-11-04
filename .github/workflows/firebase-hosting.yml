@@ -6,9 +6,16 @@ on:
       - main
 jobs:
   build_and_deploy:
-    runs-on: node:20-slim
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          
       - name: Set build environment
         run: |
           echo "PUBLIC_FIREBASE_API_KEY=${{ secrets.PUBLIC_FIREBASE_API_KEY }}" >> $GITHUB_ENV
