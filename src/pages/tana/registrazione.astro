@@ -41,3 +41,16 @@ const title = `Registrazione - Victorian Monkey`;
     </div>
   </section>
 </TanaLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('dynamic-form') as HTMLFormElement | null;
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // Redirect to Logto registration/login
+      window.location.href = '/api/auth/login';
+    });
+  });
+</script>

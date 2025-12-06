@@ -78,55 +78,14 @@ const buttonText = action === 'login' ? `Continua con ${config.name}` : `Registr
 </button>
 
 <script>
-  // Handle social login clicks
+  // Handle social login clicks - redirect to Logto login
   document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('button[data-provider]');
     
     buttons.forEach(button => {
       button.addEventListener('click', () => {
-        const provider = button.getAttribute('data-provider');
-        const action = button.getAttribute('data-action');
-        
-        import('firebase/auth').then(async ({ GoogleAuthProvider, GithubAuthProvider, signInWithPopup }) => {
-          const { getFirebaseAuth } = await import('~/config/firebase');
-          const auth = getFirebaseAuth();
-
-          const goHome = () => window.location.assign('/');
-
-          const handleResult = async (user) => {
-            if (user) {
-              const idToken = await user.getIdToken();
-              await fetch('/api/profile', { headers: { Authorization: `Bearer ${idToken}` } });
-            }
-            goHome();
-          };
-
-          try {
-            switch (provider) {
-              case 'google': {
-                const prov = new GoogleAuthProvider();
-                const res = await signInWithPopup(auth, prov);
-                await handleResult(res.user);
-                break;
-              }
-              case 'github': {
-                const prov = new GithubAuthProvider();
-                const res = await signInWithPopup(auth, prov);
-                await handleResult(res.user);
-                break;
-              }
-              case 'facebook':
-              case 'twitter':
-              case 'discord':
-              case 'apple':
-              default:
-                alert('Questo provider non è ancora configurato.');
-            }
-          } catch (e) {
-            console.error('Errore login social', e);
-            alert('Accesso non riuscito. Riprova.');
-          }
-        });
+        // All social logins go through Logto
+        window.location.href = '/api/auth/login';
       });
     });
   });

@@ -1,0 +1,54 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { db } from '../db';
+import { pages, entityTranslations } from '../db/schema';
+import { eq, and } from 'drizzle-orm';
+import { getTranslations } from '../utils/translations';
+import { marked } from 'marked';
+
+const slug = Astro.params.slug || '';
+const language = Astro.url.searchParams.get('lang') || 'it';
+
+// Fetch page by slug
+const pageResults = await db.select()
+  .from(pages)
+  .where(eq(pages.slug, slug))
+  .limit(1);
+
+if (pageResults.length === 0) {
+  return Astro.redirect('/404');
+}
+
+const page = pageResults[0];
+
+// Check if page is published
+if (!page.published) {
+  return Astro.redirect('/404');
+}
+
+// Fetch translations for the page
+const translations = await getTranslations('page', page.id, language);
+
+// Get content (markdown)
+const content = translations.content || '';
+
+// Parse markdown
+let htmlContent = '';
+try {
+  htmlContent = marked.parse(content);
+} catch (error) {
+  console.error('Error parsing markdown:', error);
+  htmlContent = content;
+}
+
+const title = translations.title || slug;
+const description = translations.description || '';
+---
+
+<Layout metadata={{ title, description }}>
+  <article class="prose prose-lg dark:prose-invert max-w-none">
+    <h1>{title}</h1>
+    {description && <p class="lead">{description}</p>}
+    <div set:html={htmlContent} />
+  </article>
+</Layout>

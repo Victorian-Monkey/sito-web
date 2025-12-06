@@ -12,43 +12,17 @@ const title = `Accesso in corso - Victorian Monkey`;
 </TanaLayout>
 
 <script>
-  import { isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged } from 'firebase/auth';
-  import { getFirebaseAuth } from '~/config/firebase';
-
-  document.addEventListener('DOMContentLoaded', async () => {
-    const auth = getFirebaseAuth();
-
-    if (!isSignInWithEmailLink(auth, window.location.href)) {
-      window.location.replace('/tana/login');
-      return;
-    }
-
-    let email = window.localStorage.getItem('vm_auth_email');
-    if (!email) {
-      email = window.prompt('Inserisci la tua email per completare l’accesso') || '';
-    }
-
-    try {
-      const result = await signInWithEmailLink(auth, email, window.location.href);
-      window.localStorage.removeItem('vm_auth_email');
-      if (result.user) {
-        const idToken = await result.user.getIdToken();
-        await fetch('/api/profile', { headers: { Authorization: `Bearer ${idToken}` } });
-      }
-      window.location.replace('/');
-    } catch (err) {
-      console.error('Completamento accesso fallito', err);
-      alert('Link non valido o scaduto. Richiedi un nuovo link di accesso.');
+  // This page is no longer needed with Logto, but kept for backwards compatibility
+  // Logto handles callbacks via /api/auth/callback
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check if we're coming from a callback
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('code')) {
+      // Redirect to callback handler
+      window.location.replace('/api/auth/callback' + window.location.search);
+    } else {
+      // Redirect to login if no callback
       window.location.replace('/tana/login');
     }
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const idToken = await user.getIdToken();
-        await fetch('/api/profile', { headers: { Authorization: `Bearer ${idToken}` } });
-      }
-    });
   });
 </script>
-
-
