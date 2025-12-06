@@ -22,18 +22,19 @@ interface Announcement {
   };
 }
 
-export async function getStaticPaths() {
-  // Fetch all announcements to generate static paths
-  const response = await fetch(getApiUrl(API_ENDPOINTS.ANNUNCI));
-  const annunciData = await response.json();
-  
-  return annunciData.announcements.map((annuncio: Announcement) => ({
-    params: { id: annuncio.id },
-    props: { annuncio },
-  }));
+// Dynamic route - fetch announcement data based on the id parameter
+const id = Astro.params.id;
+if (!id) {
+  return Astro.redirect('/404');
 }
 
-const { annuncio }: { annuncio: Announcement } = Astro.props;
+// Fetch announcement data
+const response = await fetch(getApiUrl(`announcements/${id}`));
+if (!response.ok) {
+  return Astro.redirect('/404');
+}
+
+const annuncio: Announcement = await response.json();
 
 // Helper function to get category color classes
 const getCategoryColorClasses = (color: string) => {

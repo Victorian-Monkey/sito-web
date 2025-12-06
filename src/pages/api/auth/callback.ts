@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { logtoClient } from '../../../server/logto';
+import { logtoClient } from '@/server/logto';
 
 export const GET: APIRoute = async ({ request }) => {
   try {

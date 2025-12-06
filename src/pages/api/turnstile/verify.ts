@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { verifyTurnstileToken } from '../../../server/turnstile';
+import { verifyTurnstileToken } from '@/server/turnstile';
 
 export const POST: APIRoute = async ({ request }) => {
   try {

@@ -1,10 +1,10 @@
 import type { APIRoute } from 'astro';
-import { db } from '../../../db';
-import { contactSubmissions } from '../../../db/schema';
-import { requireScope } from '../../../server/logto';
+import { db } from '@/db';
+import { contactSubmissions } from '@/db/schema';
+import { requireScope } from '@/server/logto';
 import { desc } from 'drizzle-orm';
-import { sendContactEmail } from '../../../server/mailgun';
-import { verifyTurnstileToken } from '../../../server/turnstile';
+import { sendContactEmail } from '@/server/mailgun';
+import { verifyTurnstileToken } from '@/server/turnstile';
 
 // Get configuration from environment variables
 const getMailgunConfig = () => {

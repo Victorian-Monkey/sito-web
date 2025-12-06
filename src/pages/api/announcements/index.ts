@@ -1,9 +1,9 @@
 import type { APIRoute } from 'astro';
-import { db } from '../../../db';
-import { announcements, entityTranslations } from '../../../db/schema';
-import { requireScope } from '../../../server/logto';
+import { db } from '@/db';
+import { announcements, entityTranslations } from '@/db/schema';
+import { requireScope } from '@/server/logto';
 import { eq, and, desc } from 'drizzle-orm';
-import { getTranslations } from '../../../utils/translations';
+import { getTranslations } from '@/utils/translations';
 
 export const GET: APIRoute = async ({ request }) => {
   try {

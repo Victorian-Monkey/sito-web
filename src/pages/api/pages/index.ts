@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
-import { db } from '../../../db';
-import { pages } from '../../../db/schema';
-import { requireScope } from '../../../server/logto';
+import { db } from '@/db';
+import { pages } from '@/db/schema';
+import { requireScope } from '@/server/logto';
 import { eq, desc } from 'drizzle-orm';
 
 export const GET: APIRoute = async ({ request }) => {
