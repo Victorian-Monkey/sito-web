@@ -9,6 +9,11 @@ import { marked } from 'marked';
 const slug = Astro.params.slug || '';
 const language = Astro.url.searchParams.get('lang') || 'it';
 
+// Validate slug is not empty before querying
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
 // Fetch page by slug
 const pageResults = await db.select()
   .from(pages)

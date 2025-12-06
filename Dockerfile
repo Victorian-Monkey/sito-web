@@ -20,4 +20,7 @@ ENV PORT=3000
 
 EXPOSE 3000
 
+# Note: This CMD assumes Astro is configured for SSR with @astrojs/node adapter
+# The astro.config.ts must have output: 'server' and adapter: node() configured
+# This will generate ./dist/server/entry.mjs during the build step
 CMD ["node", "./dist/server/entry.mjs"]

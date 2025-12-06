@@ -98,10 +98,15 @@ export const POST: APIRoute = async ({ request }) => {
       );
 
       if (!turnstileResult.success) {
-        return new Response(JSON.stringify({ 
+        const errorResponse: { error: string; 'error-codes'?: string[] } = {
           error: turnstileResult.error || 'Turnstile verification failed',
-          'error-codes': turnstileResult['error-codes']
-        }), {
+        };
+        
+        if (turnstileResult['error-codes']) {
+          errorResponse['error-codes'] = turnstileResult['error-codes'];
+        }
+        
+        return new Response(JSON.stringify(errorResponse), {
           status: 400,
           headers: { 'Content-Type': 'application/json' },
         });

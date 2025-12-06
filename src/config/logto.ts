@@ -1,10 +1,9 @@
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
+// Server-side configuration for Logto
+// Uses process.env since this is only used in server-side contexts
+// PUBLIC_* variables are available in both import.meta.env and process.env in Astro SSR
 export const logtoConfig = {
-  endpoint: import.meta.env.LOGTO_ENDPOINT || process.env.LOGTO_ENDPOINT || '',
-  appId: import.meta.env.LOGTO_APP_ID || process.env.LOGTO_APP_ID || '',
-  appSecret: import.meta.env.LOGTO_APP_SECRET || process.env.LOGTO_APP_SECRET || '',
-  baseUrl: import.meta.env.PUBLIC_BASE_URL || process.env.PUBLIC_BASE_URL || 'http://localhost:4321',
+  endpoint: process.env.LOGTO_ENDPOINT || '',
+  appId: process.env.LOGTO_APP_ID || '',
+  appSecret: process.env.LOGTO_APP_SECRET || '',
+  baseUrl: process.env.PUBLIC_BASE_URL || 'http://localhost:4321',
 };
