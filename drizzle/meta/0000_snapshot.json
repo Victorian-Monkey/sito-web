@@ -249,7 +249,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'it'"
+          "default": "it"
         },
         "field": {
           "name": "field",
