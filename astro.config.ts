@@ -10,7 +10,6 @@ import partytown from '@astrojs/partytown';
 import node from '@astrojs/node';
 import icon from 'astro-icon';
 import compress from 'astro-compress';
-import type { AstroIntegration } from 'astro';
 
 import astrowind from './vendor/integration';
 
@@ -20,44 +19,47 @@ import react from '@astrojs/react';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const hasExternalScripts = false;
-const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
-  hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
-
 export default defineConfig({
   output: 'server',
   adapter: node({
     mode: 'middleware',
   }),
 
-  integrations: [tailwind({
-    applyBaseStyles: false,
-  }), sitemap(), mdx(), icon({
-    include: {
-      tabler: ['*'],
-      'flat-color-icons': ['*'],
-    },
-  }), ...whenExternalScripts(() =>
+  integrations: [
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    sitemap(),
+    mdx(),
+    icon({
+      include: {
+        tabler: ['*'],
+        'flat-color-icons': ['*'],
+      },
+    }),
     partytown({
       config: { forward: ['dataLayer.push'] },
-    })
-  ), compress({
-    CSS: true,
-    HTML: {
-      'html-minifier-terser': {
-        removeAttributeQuotes: false,
+    }),
+    compress({
+      CSS: true,
+      HTML: {
+        'html-minifier-terser': {
+          removeAttributeQuotes: false,
+        },
       },
-    },
-    Image: false,
-    JavaScript: true,
-    SVG: false,
-    Logger: 1,
-  }), astrowind({
-    config: './src/config.yaml',
-  }), react(), partytown()],
+      Image: false,
+      JavaScript: true,
+      SVG: false,
+      Logger: 1,
+    }),
+    astrowind({
+      config: './src/config.yaml',
+    }),
+    react(),
+  ],
 
   image: {
-    domains: ['cdn.pixabay.com'],
+    domains: ['cdn.pixabay.com', process.env.RAILWAY_PUBLIC_DOMAIN].filter(Boolean) as string[],
   },
 
   markdown: {
@@ -73,12 +75,8 @@ export default defineConfig({
       },
     },
     server: {
-      host: '0.0.0.0',
-      allowedHosts: [
-        'sofia-pc.tyrannosaurus-celsius.ts.net',
-        'localhost',
-        '127.0.0.1'
-      ],
+      host: process.env.HOST || '0.0.0.0',
+      port: process.env.PORT ? Number(process.env.PORT) : 8080,
     },
   },
 });
